@@ -241,6 +241,8 @@
     <img src="motion/bor.png" alt="Upper Border"
          class="fade-in-top max-w-[250px] sm:max-w-[300px] max-w-[400px] sm:max-w-[450px] md:max-w-[500px] lg:max-w-[550px]">
   </div>
+
+  <p class="absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 text-bold text-black">Sebab pada awal dunia, Allah menjadikan mereka laki-laki dan perempuan, sebab itu laki-laki akan meninggalkan ayahnya dan ibunya dan bersatu dengan isterinya, sehingga keduanya itu menjadi satu daging. Demikianlah mereka bukan lagi dua, melainkan satu.” - Markus 10:6-8</p>
 </section>
 
 <!-- Section 1: Countdown -->
@@ -315,52 +317,58 @@
   
   <!-- Content Container with higher z-index -->
   <div class="relative z-10 flex flex-col justify-center items-center space-y-8">
-    <div class="text-center">
+    <div class="text-center text-black">
       <img src="assets/groom.png" alt="Groom" class="mx-auto w-48 h-48 object-cover rounded-full mb-4" />
-      <h3 class="font-bold text-2xl mb-2">Kristiyanto</h3>
-      <p class="text-lg">February 22nd, 1995</p>
+      <h2 class="font-bold text-5xl mb-2">Kristiyanto</h2>
+      <p class="text-lg">Putra pertama dari pasangan Y. Krisno Utomo dan Zefi Sugiyatni</p>
     </div>
     
-    <div class="text-center">
+    <div class="text-center text-black">
       <img src="assets/bride.png" alt="Bride" class="mx-auto w-48 h-48 object-cover rounded-full mb-4" />
-      <h3 class="font-bold text-2xl mb-2">Isabella Carissa Fibriyanti</h3>
-      <p class="text-lg">February 27th, 1998</p>
+      <h2 class="font-bold text-5xl mb-2">Isabella Carissa Fibriyanti</h2>
+      <p class="text-lg">putri kedua dari pasangan bapak FX Nur Santoso dan Christina Sudarmi </p>
     </div>
   </div>
 </section>
 
-    <!-- Section 3.5: Relationship Timeline -->
 <section class="relative h-screen flex flex-col justify-center text-center px-4 pt-56 pb-64 overflow-hidden">
-  <!-- Background Image with very low opacity -->
-  <div class="absolute inset-0 z-0 bg-[url('assets/bg-section-blur3.png')] bg-cover bg-center bg-no-repeat bg-opacity-30"></div>
-      <h2 class="text-3xl font-bold text-center mb-10">Our Journey Together</h2>
+  <!-- Background Image Layer -->
+  <div class="absolute inset-0 z-0">
+    <div class="w-full h-full absolute inset-0 z-10"></div> <!-- Optional dark overlay for contrast -->
+    <img src="assets/bg-section-blur3.png" alt="Background" class="w-full h-full object-cover" />
+  </div>
 
-      <div class="relative border-l-2 border-[#FFD700] mx-auto" style="max-width: 600px;">
-        <div class="timeline-item-left">
-          <div class="dot"></div>
-          <h3 class="font-semibold text-lg">(YYYY) – When It All Began</h3>
-          <p>We met at a social event—both shy, exchanging smiles but too quiet to speak. That gentle start became the spark of something meaningful.</p>
-        </div>
-
-        <div class="timeline-item-right">
-          <div class="dot"></div>
-          <h3 class="font-semibold text-lg">(YYYY) – Our First Night Together</h3>
-          <p>We shared our first night as a couple at a nearby angkringan—simple food, honest laughter, and the feeling of something real beginning.</p>
-        </div>
-
-        <div class="timeline-item-left">
-          <div class="dot"></div>
-          <h3 class="font-semibold text-lg">(YYYY) – First Trip to Jogja</h3>
-          <p>Jogja welcomed us on our first trip together. Exploring hand in hand, we created memories that still echo with laughter and love.</p>
-        </div>
-
-        <div class="timeline-item-right">
-          <div class="dot"></div>
-          <h3 class="font-semibold text-lg">(YYYY) – The Engagement</h3>
-          <p>With hearts full of love and hope, we promised forever. That day marked a new beginning on the road to becoming one.</p>
-        </div>
+  <!-- Content Layer -->
+  <div class="relative z-20">
+    <h2 class="text-6xl font-bold text-black text-center mb-10">Our Journey Together</h2>
+    <div class="mx-auto max-w-[600px] text-black">
+      <div class="timeline-item-left mb-10">
+        <div class="dot"></div>
+        <h3 class="font-semibold text-3xl">(YYYY) – When It All Began</h3>
+        <p>We met at a social event—both shy, exchanging smiles but too quiet to speak. That gentle start became the spark of something meaningful.</p>
       </div>
-    </section>
+
+      <div class="timeline-item-right mb-10">
+        <div class="dot"></div>
+        <h3 class="font-semibold text-3xl">(YYYY) – Our First Night Together</h3>
+        <p>We shared our first night as a couple at a nearby angkringan—simple food, honest laughter, and the feeling of something real beginning.</p>
+      </div>
+
+      <div class="timeline-item-left mb-10">
+        <div class="dot"></div>
+        <h3 class="font-semibold text-3xl">(YYYY) – First Trip to Jogja</h3>
+        <p>Jogja welcomed us on our first trip together. Exploring hand in hand, we created memories that still echo with laughter and love.</p>
+      </div>
+
+      <div class="timeline-item-right">
+        <div class="dot"></div>
+        <h3 class="font-semibold text-3xl">(YYYY) – The Engagement</h3>
+        <p>With hearts full of love and hope, we promised forever. That day marked a new beginning on the road to becoming one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!-- Section 4: Church Location -->
     <section class="p-8 text-center">

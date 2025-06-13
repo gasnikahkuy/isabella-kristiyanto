@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kristiyanto & Isabella</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="text-[#FFD700]">
+
+  <!-- Cover Slide -->
+  <div id="cover">
+    <div class="overlay"></div>
+    <h1>Kristiyanto & Isabella</h1>
+    <button id="enterBtn" class="mt-6 px-6 py-3 text-black font-semibold rounded-full" style="background-color: #FFD700;">
+      Enter Invitation
+    </button>
+    <h1>You're invited, <span id="inviteeName">dear guest</span>!</h1>
+    <!-- Use ?to=Jonathan+Smith to change name-->
+  </div>
+
+  <!-- Audio Element -->
+  <audio id="backgroundMusic" loop>
+    <source src="assets/wedding-music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Control Button -->
+  <div id="audioControl" class="audio-control" style="display: none;">
+    <span class="audio-icon" id="audioIcon">🎵</span>
+    <span class="audio-text" id="audioText">Music On</span>
+  </div>
+
+  <!-- Main Content (hidden initially) -->
+  <div id="main" class="hidden">
+
+<!-- Section 0: Animated Background, Pillars, Bushes, Flowers -->
+<style>
+  @keyframes fadeInBackground {
+    0% {
+      opacity: 0;
+      background-size: 110% 110%;
+    }
+    100% {
+      opacity: 1;
+      background-size: 100% 100%;
+    }
+  }
+
+  @keyframes slideInLeft {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideInRight {
+    0% { transform: translateX(100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideUpFloat {
+    0% { transform: translateY(100%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes floatDownUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(10px); } /* moves down at mid-point */
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  @keyframes pulseEffect {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+
+  @keyframes glowPulse {
+    0%, 100% {
+      filter: drop-shadow(0 0 0px #ffffff);
+      transform: scale(1);
+    }
+    50% {
+      filter: drop-shadow(0 0 12px #facc15);
+      transform: scale(1.02);
+    }
+  }
+
+  @keyframes slideUpSlow {
+    0% {
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeInTop {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeInSlow {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+  .fade-in-top {
+    animation: fadeInTop 1.5s ease-out 5.5s forwards;
+    opacity: 0;
+  }
+
+  .fade-bg {
+    animation: fadeInBackground 2s ease-out forwards;
+  }
+
+  .pillar-left {
+    animation: slideInLeft 1.5s ease-out 2s forwards;
+    opacity: 0;
+  }
+
+  .pillar-right {
+    animation: slideInRight 1.5s ease-out 2s forwards;
+    opacity: 0;
+  }
+
+  .slide-float1 {
+    animation:
+      slideUpFloat 1.2s ease-out 3.2s forwards,
+      floatUpDown 3s ease-in-out infinite 4.4s;
+    opacity: 0;
+  }
+
+  .slide-float2 {
+    animation:
+      slideUpFloat 1.2s ease-out 3.2s forwards,
+      floatDownUp 3s ease-in-out infinite 4.4s;
+    opacity: 0;
+  }
+
+  .fade-pulse {
+    animation:
+      fadeIn 2s ease-out 4.4s forwards,
+      pulseEffect 2.5s ease-in-out infinite 6.5s;
+    opacity: 0;
+  }
+
+  .tree-left {
+    animation:
+      slideInRight 1.5s ease-out 0.8s forwards,
+      glowPulse 3s ease-in-out infinite 2.3s;
+    opacity: 0;
+    z-index: 5;
+  }
+
+  .tree-right {
+    animation:
+      slideInLeft 1.5s ease-out 0.8s forwards,
+      glowPulse 3s ease-in-out infinite 2.3s;
+    opacity: 0;
+    z-index: 5;
+  }
+
+  .stage-center {
+    animation: slideUpSlow 2s ease-out 5s forwards;
+    opacity: 0;
+    z-index: 25;
+  }
+
+  .embtext-fade-pulse {
+    animation:
+      fadeInSlow 2.5s ease-out 4s forwards,
+      pulseEffect 3s ease-in-out infinite 6.5s;
+    opacity: 0;
+  }
+</style>
+
+<section class="relative min-h-screen fade-bg overflow-hidden"
+         style="
+           background-image: url('motion/bgrd.png');
+           background-size: 100% 100%;
+           background-position: center;
+           background-repeat: no-repeat;
+           opacity: 0;
+         ">
+
+  <!-- Pillars -->
+  <img src="motion/prleft.png" alt="Left Pillar"
+       class="pillar-left absolute bottom-0 left-0 h-[70%] max-w-[150px] md:max-w-[200px] z-10">
+  <img src="motion/prright.png" alt="Right Pillar"
+       class="pillar-right absolute bottom-0 right-0 h-[70%] max-w-[150px] md:max-w-[200px] z-10">
+
+  <!-- Back Flowers (behind bushes) -->
+  <img src="motion/backflowerleft.png" alt="Back Flower Left"
+       class="slide-float1 absolute bottom-0 left-[20px] max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px] z-10">
+  <img src="motion/backflowerright.png" alt="Back Flower Right"
+       class="slide-float1 absolute bottom-0 right-[20px] max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px] z-10">
+
+  <!-- Bushes (in front of flowers, center to pillars) -->
+  <img src="motion/bushesleft.png" alt="Bushes Left"
+       class="slide-float2 absolute bottom-0 left-[40px] max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px] z-20">
+  <img src="motion/bushesright.png" alt="Bushes Right"
+       class="slide-float2 absolute bottom-0 right-[40px] max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px] z-20">
+
+  <!-- Center Bushes (in front, pulsing) -->
+  <div class="absolute bottom-[-10px] left-1/2 transform -translate-x-1/2 z-30">
+    <img src="motion/bushescenter.png" alt="Bushes Center"
+         class="fade-pulse max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px]">
+  </div>
+
+  <!-- Trees Behind Pillars -->
+  <img src="motion/treeleft.png" alt="Tree Left"
+       class="tree-left absolute bottom-0 left-0 h-[80%] max-w-[200px] md:max-w-[250px]">
+
+  <img src="motion/treeright.png" alt="Tree Right"
+       class="tree-right absolute bottom-0 right-0 h-[80%] max-w-[200px] md:max-w-[250px]">
+
+  <!-- Stage (slightly above center bushes) -->
+  <div class="absolute bottom-[10px] left-1/2 transform -translate-x-1/2 translate-y-[10%] z-25">
+    <img src="motion/stage.png" alt="Stage" class="stage-center max-w-[400px] sm:max-w-[450px] md:max-w-[500px] lg:max-w-[550px]">
+  </div>
+
+  <!-- Embtext (behind border, center) -->
+  <div class="absolute top-[50%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40">
+    <img src="motion/embtext.png" alt="Emblem Text"
+         class="embtext-fade-pulse max-w-[400px] sm:max-w-[450px] md:max-w-[500px] lg:max-w-[550px]">
+  </div>
+
+  <!-- Border -->
+  <div class="absolute top-[22%] left-1/2 transform -translate-x-1/2 z-50">
+    <img src="motion/bor.png" alt="Upper Border"
+         class="fade-in-top max-w-[250px] sm:max-w-[300px] max-w-[400px] sm:max-w-[450px] md:max-w-[500px] lg:max-w-[550px]">
+  </div>
+</section>
+
+<!-- Section 1: Countdown -->
+<section class="relative h-screen flex flex-col justify-center items-center text-center bg-cover bg-center bg-fixed" style="background-image: url('assets/bg-section.png');">
+      <div class="bg-black bg-opacity-60 p-8 rounded-xl">
+        <h2 id="wgm" class="text-3xl md:text-5xl mb-4">We're Getting Married!</h2>
+        <div id="countdown" class="text-xl md:text-3xl font-semibold"></div>
+      </div>
+    </section>
+
+<!-- Section 2: meet the couple -->
+<section id="intro-couple" class="relative h-screen flex flex-col justify-center text-center px-4 pt-56 pb-64 overflow-hidden">
+  <!-- Background Image with very low opacity -->
+  <div class="absolute inset-0 z-0 bg-[url('assets/bg-section-blur.png')] bg-cover bg-center bg-no-repeat bg-opacity-60"></div>
+  
+  <!-- Border (now on top of background) -->
+  <div class="absolute inset-0 z-5 bg-[url('assets/border.png')] bg-no-repeat bg-center bg-contain pointer-events-none border-anim"></div>
+
+  <!-- Content -->
+  <div class="relative z-20 flex flex-col items-center space-y-4">
+    <h2 class="font-custom text-yellow-600 animate-slide-fade text-[clamp(3.5rem,10vw,7rem)] leading-tight">Isabella</h2>
+    <div class="my-2">
+      <img src="assets/deco.png" alt="And Decoration" class="mx-auto w-[100px] sm:w-[140px] md:w-[180px]" />
+    </div>
+    <h2 class="font-custom text-yellow-600 animate-slide-fade text-[clamp(3.5rem,10vw,7rem)] leading-tight">Kristiyanto</h2>
+  </div>
+
+  <!-- Flower Container - Larger & Closer Layered -->
+  <div class="absolute inset-0 z-10 pointer-events-none max-w-full">
+
+    <!-- Upper Left Flower - Fixed Positioning -->
+    <div class="absolute top-[12%] -left-2 sm:left-0 md:left-2 lg:left-4 animate-float-up z-12">
+      <img src="assets/flowerUpperLeft.png" alt="Flower Upper Left" class="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto max-w-[35vw]">
+    </div>
+
+    <!-- Upper Right Flower - Fixed Positioning -->
+    <div class="absolute top-[12%] -right-2 sm:right-0 md:right-2 lg:right-4 animate-float-down z-12">
+      <img src="assets/flowerUpperRight.png" alt="Flower Upper Right" class="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto max-w-[35vw]">
+    </div>
+
+    <!-- Middle Left Flower - Fixed Positioning -->
+    <div class="absolute top-[30%] transform -translate-y-1/2 -left-3 sm:-left-1 md:left-1 lg:left-3 animate-float-down z-11">
+      <img src="assets/flowerMiddleLeft.png" alt="Flower Middle Left" class="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto max-w-[35vw]">
+    </div>
+
+    <!-- Middle Right Flower - Fixed Positioning -->
+    <div class="absolute top-[30%] transform -translate-y-1/2 -right-3 sm:-right-1 md:right-1 lg:right-3 animate-float-up z-11">
+      <img src="assets/flowerMiddleRight.png" alt="Flower Middle Right" class="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto max-w-[35vw]">
+    </div>
+
+    <!-- Flower A Left - Larger & Closer -->
+    <div class="absolute bottom-[15%] -left-4 sm:-left-2 md:left-0 lg:left-2 animate-float-up z-10">
+      <img src="assets/flowerLeftA.png" alt="Flower A Left" class="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto max-w-[35vw]">
+    </div>
+
+    <!-- Flower B Center - Much Larger & Forward -->
+    <div class="absolute bottom-[10%] left-1/2 transform -translate-x-1/2 animate-float-down-center z-30">
+      <img src="assets/flowerB.png" alt="Flower B Center" class="w-100 sm:w-120 md:w-140 lg:w-160 xl:w-200 h-auto max-w-[60vw]">
+    </div>
+
+    <!-- Flower A Right - Larger & Closer -->
+    <div class="absolute bottom-[15%] -right-4 sm:-right-2 md:right-0 lg:right-2 animate-float-up z-10">
+      <img src="assets/flowerRightA.png" alt="Flower A Right" class="w-48 sm:w-56 md:w-64 lg:w-72 xl:w-80 h-auto max-w-[35vw]">
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: Groom and Bride -->
+<section class="relative h-screen flex flex-col justify-center text-center px-4 pt-56 pb-64 overflow-hidden">
+  <!-- Background Image with very low opacity -->
+  <div class="absolute inset-0 z-0 bg-[url('assets/bg-section-blur.png')] bg-cover bg-center bg-no-repeat bg-opacity-30"></div>
+  
+  <!-- Content Container with higher z-index -->
+  <div class="relative z-10 flex flex-col justify-center items-center space-y-8">
+    <div class="text-center">
+      <img src="assets/groom.png" alt="Groom" class="mx-auto w-48 h-48 object-cover rounded-full mb-4" />
+      <h3 class="font-bold text-2xl mb-2">Kristiyanto</h3>
+      <p class="text-lg">February 22nd, 1995</p>
+    </div>
+    
+    <div class="text-center">
+      <img src="assets/bride.png" alt="Bride" class="mx-auto w-48 h-48 object-cover rounded-full mb-4" />
+      <h3 class="font-bold text-2xl mb-2">Isabella Carissa Fibriyanti</h3>
+      <p class="text-lg">February 27th, 1998</p>
+    </div>
+  </div>
+</section>
+
+    <!-- Section 3.5: Relationship Timeline -->
+    <section class="max-w-4xl mx-auto p-8 font-serif text-[#FFD700] clear-both">
+      <h2 class="text-3xl font-bold text-center mb-10">Our Journey Together</h2>
+
+      <div class="relative border-l-2 border-[#FFD700] mx-auto" style="max-width: 600px;">
+        <div class="timeline-item-left">
+          <div class="dot"></div>
+          <h3 class="font-semibold text-lg">(YYYY) – When It All Began</h3>
+          <p>We met at a social event—both shy, exchanging smiles but too quiet to speak. That gentle start became the spark of something meaningful.</p>
+        </div>
+
+        <div class="timeline-item-right">
+          <div class="dot"></div>
+          <h3 class="font-semibold text-lg">(YYYY) – Our First Night Together</h3>
+          <p>We shared our first night as a couple at a nearby angkringan—simple food, honest laughter, and the feeling of something real beginning.</p>
+        </div>
+
+        <div class="timeline-item-left">
+          <div class="dot"></div>
+          <h3 class="font-semibold text-lg">(YYYY) – First Trip to Jogja</h3>
+          <p>Jogja welcomed us on our first trip together. Exploring hand in hand, we created memories that still echo with laughter and love.</p>
+        </div>
+
+        <div class="timeline-item-right">
+          <div class="dot"></div>
+          <h3 class="font-semibold text-lg">(YYYY) – The Engagement</h3>
+          <p>With hearts full of love and hope, we promised forever. That day marked a new beginning on the road to becoming one.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Church Location -->
+    <section class="p-8 text-center">
+      <img src="assets/gereja.png" alt="Church" class="mx-auto w-[3%] rounded-xl mb-4" />
+      <h3 class="text-2xl font-bold">Holy Church</h3>
+      <p class="mb-2">Gereja St Yohanes Rasul Kedaton</p>
+      
+      <!-- Small Embedded Map Widget -->
+      <div class="mt-4 mx-auto w-[40%] rounded-xl overflow-hidden">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!4v1747374695030!6m8!1m7!1s1mNBXIZaP0U5XFXLI6iF1A!2m2!1d-5.388221864332976!2d105.2585806160754!3f178.49743599197188!4f-9.660766385198386!5f0.7820865974627469"
+          width="100%"
+          height="200"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- Section 5: Wedding Building -->
+    <section class="p-8 text-center">
+      <img src="assets/gsg.png" alt="Wedding Hall" class="mx-auto w-[3%] rounded-xl mb-4" />
+      <h3 class="text-2xl font-bold">Wedding Hall</h3>
+      <p class="mb-2">GSG Gentiaras Wayhalim</p>
+
+      <!-- Small Embedded Map Widget -->
+      <div class="mt-4 mx-auto w-[40%] rounded-xl overflow-hidden">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!4v1747374096803!6m8!1m7!1sd_uDKMjZxhaAsR_wQNHtLQ!2m2!1d-5.385251947172421!2d105.2793153993395!3f266.33127661199705!4f-5.431736634177028!5f0.7820865974627469"
+          width="100%"
+          height="200"
+          style="border:0;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+    </section>
+
+    <!-- Section 6: Photo Gallery -->
+    <section class="p-8 max-w-5xl mx-auto overflow-hidden relative">
+      <h2 class="text-3xl font-bold text-center mb-8">Gallery</h2>
+    
+      <div class="relative overflow-hidden">
+        <div class="flex animate-scroll w-max">
+          <!-- Image Set 1 -->
+          <img src="assets/gal1.png" alt="Gallery 1" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal2.png" alt="Gallery 2" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal3.png" alt="Gallery 3" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal4.png" alt="Gallery 4" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal5.png" alt="Gallery 5" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <!-- Duplicate Set for Infinite Scroll -->
+          <img src="assets/gal1.png" alt="Gallery 1" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal2.png" alt="Gallery 2" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal3.png" alt="Gallery 3" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal4.png" alt="Gallery 4" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+          <img src="assets/gal5.png" alt="Gallery 5" class="w-64 flex-shrink-0 rounded-xl mx-2" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 8: Wishes -->
+    <section class="p-8 max-w-xl mx-auto font-serif text-[#f5deb3]">
+      <h2 class="text-3xl font-bold text-center mb-6 text-[#FFD700]">Leave Your Wishes</h2>
+      
+      <input 
+        type="text" 
+        id="name" 
+        placeholder="Your name" 
+        class="w-full mb-4 px-4 py-3 rounded-lg bg-[#fff8dc] text-black text-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+      />
+      
+      <textarea 
+        id="message" 
+        rows="4" 
+        placeholder="Write your wishes..." 
+        class="w-full mb-4 px-4 py-3 rounded-lg bg-[#fff8dc] text-black text-lg placeholder-gray-500 resize-none focus:outline-none focus:ring-2 focus:ring-[#FFD700]"
+      ></textarea>
+      
+      <button 
+        class="w-full bg-[#FFD700] text-black font-bold py-3 rounded-lg hover:bg-yellow-500 transition-colors"
+        onclick="postMessage()"
+      >
+        Send Wish
+      </button>
+      
+      <div id="messages" class="mt-8 space-y-6">
+        <!-- Messages will load here -->
+      </div>
+    </section>
+
+  </div>
+
+  <script src="script.js"></script>
+  <script src="scriptpostwishes.js"></script>
+</body>
+</html>

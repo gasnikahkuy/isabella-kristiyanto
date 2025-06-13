@@ -1,0 +1,424 @@
+html, body {
+  background: transparent !important;
+  margin: 0;
+  padding: 0;
+}
+
+#main {
+  background: transparent !important;
+}
+
+@font-face {
+  font-family: 'Beautiful';
+  src: url('fonts/Beautiful.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media (max-width: 640px) {
+  .flower-group img {
+    width: 120px !important;
+  }
+}
+
+@font-face {
+  font-family: 'font-custom';
+  src: url('fonts/Bidenatrial.ttf') format('truetype');
+}
+
+body {
+  font-family: 'Raleway', sans-serif;
+}
+
+h1, h2, h4 {
+  font-family: 'Beautiful', serif;
+  line-height: 1.2;
+}
+
+h3 {
+  font-family: 'Beautiful', serif;
+  font-size: 5.4em;
+}
+
+#wgm {
+  font-size: 5.4em;
+}
+
+.big-beautiful {
+  font-size: 3.4em;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+#cover h1 {
+  font-family: 'Beautiful', serif;
+  font-size: 3.4em;
+  line-height: 1.2;
+  color: #000000;
+}
+
+#couple {
+  font-size: 2.5em;
+  line-height: 1.2;
+  margin-top: 0.5em;
+  margin-bottom: 0.3em;
+}
+
+.font-custom {
+  font-family: 'font-custom', sans-serif;
+}
+
+button {
+  background-color: #000000;
+  color: #ffffff;
+  border: 2px solid #fff;
+  opacity: 1;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button:hover {
+  background-color: #FFD700;
+  color: #000000;
+  cursor: pointer;
+}
+
+
+/* Cover styles */
+#cover {
+  position: fixed;
+  inset: 0;
+  background-image: url('assets/landing.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  z-index: 50;
+  color: white;
+  
+  /* Smooth transition for the slide-up animation */
+  transition: transform 0.7s ease, opacity 0.7s ease;
+  /* Initial state: Fully visible, at original position */
+  transform: translateY(0);
+  opacity: 1;
+}
+
+#cover .overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0, 0, 0);
+  opacity: 0;
+  z-index: 10;
+}
+
+#cover > * {
+  position: relative;
+  z-index: 20;
+}
+
+/* FIXED: Class to trigger the slide-up and fade-out animation */
+/* Changed from #cover-slide-out (ID) to .cover-slide-out (CLASS) */
+.cover-slide-out {
+  transform: translateY(-100%) !important; /* Slides up completely out of view */
+  opacity: 0 !important; /* Fades out */
+  pointer-events: none; /* Prevents interaction */
+}
+
+/* Animation keyframes */
+@keyframes slideFadeUp {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes floatDown {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(8px); }
+}
+
+@keyframes floatUpCenter {
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50% { transform: translateY(-8px) translateX(-50%); }
+}
+
+@keyframes floatDownCenter {
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50% { transform: translateY(8px) translateX(-50%); }
+}
+
+@keyframes scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+@keyframes slideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+  50% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+}
+
+/* Animation classes */
+.animate-float-up {
+  animation: floatUp 4s ease-in-out infinite;
+}
+
+.animate-float-down {
+  animation: floatDown 4s ease-in-out infinite;
+}
+
+.animate-float-down-center {
+  animation: floatDownCenter 4s ease-in-out infinite;
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-slide-fade {
+  animation: slideFadeUp 0.8s ease-out forwards;
+}
+
+.hidden-init {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.border-anim {
+  background-size: cover;
+  opacity: 1;
+}
+
+/* Timeline fixes for float */
+.timeline-item-left {
+  margin-bottom: 3rem;
+  margin-left: 0;
+  position: relative;
+  width: 50%;
+  padding-right: 2rem;
+  text-align: right;
+  float: left;
+  clear: left;
+}
+
+.timeline-item-right {
+  margin-bottom: 3rem;
+  margin-right: 0;
+  position: relative;
+  width: 50%;
+  padding-left: 2rem;
+  text-align: left;
+  float: right;
+  clear: right;
+}
+
+.timeline-item-left .dot {
+  position: absolute;
+  left: -1.25rem;
+  top: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #FFD700;
+  border-radius: 9999px;
+}
+
+.timeline-item-right .dot {
+  position: absolute;
+  right: -1.25rem;
+  top: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: #FFD700;
+  border-radius: 9999px;
+}
+
+/* Message Box Styles (for wishes section) */
+#messages .message-box {
+  background-color: #fff8dc;
+  color: black;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(255, 215, 0, 0.25);
+}
+
+#messages .name {
+  font-weight: 700;
+  color: #cd853f; /* Peru */
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1em;
+  margin-bottom: 6px;
+}
+
+#messages .time {
+  font-size: 0.85em;
+  color: gray;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* Enhanced Comment Card Styles */
+.message-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border: 1px solid #FFD700;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.1);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.message-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(255, 215, 0, 0.2);
+  border-color: #FFF700;
+}
+
+.message-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #FFD700, transparent);
+  border-radius: 16px 16px 0 0;
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.message-name {
+  font-weight: 600;
+  color: #FFD700;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+}
+
+.message-name::before {
+  content: '💌';
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.message-timestamp {
+  font-size: 0.85rem;
+  color: #999;
+  background: rgba(255, 215, 0, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.message-content {
+  color: #e5e5e5;
+  line-height: 1.6;
+  font-size: 1rem;
+  position: relative;
+  padding-left: 1rem;
+}
+
+.message-content::before {
+  content: '"';
+  position: absolute;
+  left: 0;
+  top: -0.25rem;
+  font-size: 2rem;
+  color: #FFD700;
+  opacity: 0.3;
+  font-family: serif;
+}
+
+.message-content::after {
+  content: '"';
+  position: absolute;
+  right: 0;
+  bottom: -0.5rem;
+  font-size: 2rem;
+  color: #FFD700;
+  opacity: 0.3;
+  font-family: serif;
+}
+
+/* Loading animation for messages */
+.message-card.loading {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideIn 0.5s ease-out forwards;
+}
+
+/* Empty state styling */
+.empty-messages {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: #999;
+  border: 2px dashed rgba(255, 215, 0, 0.3);
+  border-radius: 16px;
+  background: rgba(255, 215, 0, 0.05);
+}
+
+.empty-messages::before {
+  content: '💕';
+  display: block;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+/* Audio Control Styles */
+.audio-control {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid #FFD700;
+  border-radius: 50px;
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.audio-control:hover {
+  background: rgba(255, 215, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.audio-control.playing {
+  animation: pulse 2s infinite;
+}
+
+.audio-icon {
+  font-size: 1.2rem;
+  color: #FFD700;
+}
+
+.audio-text {
+  color: #FFD700;
+  font-size: 0.9rem;
+  font-weight: 500;
+}

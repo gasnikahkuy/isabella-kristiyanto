@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wedding Link Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+      background: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+    input, textarea, button {
+      width: 100%;
+      margin-top: 5px;
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    .result {
+      margin-top: 30px;
+    }
+    .entry {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #f0f0f0;
+      border-radius: 8px;
+    }
+    .entry p {
+      margin: 5px 0;
+      word-break: break-word;
+    }
+    .whatsapp-link {
+      display: inline-block;
+      margin-top: 5px;
+      background: #25D366;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    @media (max-width: 500px) {
+      body {
+        margin: 10px;
+      }
+      .container {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wedding Link Generator</h1>
+
+    <h3>💬 Single Entry</h3>
+    <label for="name">Guest Name</label>
+    <input type="text" id="name" placeholder="e.g., Jonathan Smith" />
+
+    <label for="phone">WhatsApp Number</label>
+    <input type="text" id="phone" placeholder="e.g., 081234567890 or 6281234567890" />
+
+    <button onclick="generateSingle()">Generate & Add</button>
+
+    <hr style="margin: 30px 0;">
+
+    <h3>📋 Bulk Entry (Name - Number per line)</h3>
+    <label for="bulkInput">Example:<br>Jonathan Smith - 081234567890</label>
+    <textarea id="bulkInput" rows="6" placeholder="Paste multiple names and numbers here..."></textarea>
+
+    <button onclick="generateBulk()">Generate Bulk</button>
+
+    <label for="customMsg">Custom Message (Optional)</label>
+    <textarea id="customMsg" rows="3">Hello [name]! You're invited to our wedding! 🎉 Here's your invitation link: [link]</textarea>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    const baseUrl = "https://gasnikahkuy.github.io/isabella-kristiyanto/";
+
+    function normalizePhone(phone) {
+      let cleaned = phone.replace(/[^0-9]/g, "");
+      if (cleaned.startsWith("0")) {
+        cleaned = "62" + cleaned.slice(1);
+      }
+      return cleaned;
+    }
+
+    function createEntry(name, phone, customMsg) {
+      const encodedName = encodeURIComponent(name);
+      const finalUrl = `${baseUrl}?to=${encodedName}`;
+      const finalPhone = normalizePhone(phone);
+
+      let message = customMsg || `Hello [name]! You're invited to our wedding! 🎉 Here's your invitation link: [link]`;
+      message = message.replace(/\[name\]/g, name).replace(/\[link\]/g, finalUrl);
+      const encodedMsg = encodeURIComponent(message);
+      const waLink = `https://wa.me/${finalPhone}?text=${encodedMsg}`;
+
+      const entryDiv = document.createElement("div");
+      entryDiv.className = "entry";
+      entryDiv.innerHTML = `
+        <p><strong>${name}</strong></p>
+        <p><a href="${finalUrl}" target="_blank">${finalUrl}</a></p>
+        <a class="whatsapp-link" href="${waLink}" target="_blank">Send via WhatsApp</a>
+      `;
+
+      document.getElementById("result").appendChild(entryDiv);
+    }
+
+    function generateSingle() {
+      const name = document.getElementById("name").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const customMsg = document.getElementById("customMsg").value.trim();
+
+      if (!name || !phone) {
+        alert("Please input both name and phone number.");
+        return;
+      }
+
+      createEntry(name, phone, customMsg);
+
+      // Clear input
+      document.getElementById("name").value = "";
+      document.getElementById("phone").value = "";
+    }
+
+    function generateBulk() {
+      const lines = document.getElementById("bulkInput").value.trim().split("\n");
+      const customMsg = document.getElementById("customMsg").value.trim();
+      if (lines.length === 0 || lines[0].trim() === "") {
+        alert("Bulk input is empty!");
+        return;
+      }
+
+      lines.forEach(line => {
+        const [namePart, phonePart] = line.split("-").map(s => s.trim());
+        if (namePart && phonePart) {
+          createEntry(namePart, phonePart, customMsg);
+        }
+      });
+
+      document.getElementById("bulkInput").value = "";
+    }
+  </script>
+</body>
+</html>

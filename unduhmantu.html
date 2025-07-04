@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Zoom Pass-Through</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+      overflow-x: hidden;
+    }
+
+    .scene {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform-origin: center;
+      will-change: transform, opacity;
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      z-index: 5;
+    }
+
+    .container {
+      height: 900vh;
+      position: relative;
+      z-index: 10;
+    }
+
+    .scene-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
+      overflow: hidden;
+      will-change: opacity, transform;
+    }
+
+    .scene-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: center;
+      will-change: transform, opacity;
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      opacity: 1;
+    }
+
+    .tree, .bush {
+      position: fixed;
+      bottom: 0;
+      z-index: 20;
+      will-change: transform, opacity;
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      pointer-events: none;
+    }
+
+    .tree {
+      transform: scale(3);
+      transform-origin: bottom center;
+    }
+
+    .bush {
+      z-index: 25;
+    }
+
+    /* Fallback gradients in case images don't load */
+    .bg-fallback-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+    .bg-fallback-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+    .bg-fallback-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+    .bg-fallback-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+    .bg-fallback-5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+    .bg-fallback-6 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+    .bg-fallback-7 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+    .bg-fallback-8 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
+  </style>
+</head>
+<body>
+
+  <!-- Background for Scene 1 -->
+  <div class="scene-bg bg-fallback-1" id="scene1Bg">
+    <img src="undmnt/sc1.JPG" alt="Scene 1 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Background for Scene 2 -->
+  <div class="scene-bg bg-fallback-2" id="scene2Bg" style="opacity: 0;">
+    <img src="undmnt/sc2.JPG" alt="Scene 2 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Background for Scene 3 -->
+  <div class="scene-bg bg-fallback-3" id="scene3Bg" style="opacity: 0;">
+    <img src="undmnt/sc3.JPG" alt="Scene 3 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Background for Scene 4 -->
+  <div class="scene-bg bg-fallback-4" id="scene4Bg" style="opacity: 0;">
+    <img src="undmnt/sc4.JPG" alt="Scene 4 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Background for Scene 5 -->
+  <div class="scene-bg bg-fallback-5" id="scene5Bg" style="opacity: 0;">
+    <img src="undmnt/sc5.JPG" alt="Scene 5 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Background for Scene 6 -->
+  <div class="scene-bg bg-fallback-6" id="scene6Bg" style="opacity: 0;">
+    <img src="undmnt/sc6.JPG" alt="Scene 6 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Background for Scene 7 -->
+  <div class="scene-bg bg-fallback-7" id="scene7Bg" style="opacity: 0;">
+    <img src="undmnt/sc7.JPG" alt="Scene 7 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Background for Scene 8 -->
+  <div class="scene-bg bg-fallback-8" id="scene8Bg" style="opacity: 0;">
+    <img src="undmnt/sc8.JPG" alt="Scene 8 Background" onerror="this.style.display='none'" />
+  </div>
+
+  <!-- Fixed Trees & Bushes -->
+  <img src="undmnt/tree1.png" alt="Tree 1" id="tree1" class="tree left-[5%] w-1/4 max-w-md" 
+       onerror="this.style.display='none'" />
+  <img src="undmnt/tree2.png" alt="Tree 2" id="tree2" class="tree right-[5%] w-1/4 max-w-md" 
+       onerror="this.style.display='none'" />
+  <img src="undmnt/bush1.png" alt="Bush 1" id="bush1" class="bush left-0 w-1/2 max-w-md" 
+       onerror="this.style.display='none'" />
+  <img src="undmnt/bush2.png" alt="Bush 2" id="bush2" class="bush right-0 w-1/2 max-w-md" 
+       onerror="this.style.display='none'" />
+
+  <!-- Scrollable Scenes -->
+  <div class="container">
+    <div class="scene" id="scene1">
+      <div class="flex flex-col items-center text-center z-10">
+        <img src="undmnt/BKlogo.png" alt="BK Logo"
+             class="w-40 md:w-60 lg:w-72 mb-6"
+             id="bkLogo" 
+             onerror="this.outerHTML='<div class=\'w-40 h-40 bg-white rounded-full flex items-center justify-center text-2xl font-bold text-gray-800 shadow-lg mb-6\' id=\'bkLogo\'>B&K</div>'" />
+        <h1 class="text-5xl font-bold text-white drop-shadow-lg">Welcome to Our Garden</h1>
+      </div>
+    </div>
+
+    <div class="scene" id="scene2">
+      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
+        <h2 class="text-4xl font-semibold text-pink-600">Kristiyanto & Isabella</h2>
+        <p class="text-gray-600 mt-4">Together forever</p>
+      </div>
+    </div>
+
+    <div class="scene" id="scene3">
+      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
+        <h2 class="text-3xl font-bold text-blue-600">Saturday, 26 July 2025</h2>
+        <p class="text-lg mt-2 text-gray-700">St. Mary's Cathedral, Yogyakarta</p>
+        <p class="text-sm text-gray-500 mt-2">10:00 AM - Holy Matrimony</p>
+      </div>
+    </div>
+
+    <div class="scene" id="scene4">
+      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
+        <h2 class="text-3xl font-bold mb-4 text-green-600">Our Journey</h2>
+        <p class="text-gray-700">From the first hello to forever after...</p>
+        <p class="text-sm text-gray-500 mt-2">A love story written in the stars</p>
+      </div>
+    </div>
+
+    <div class="scene" id="scene5">
+      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
+        <h2 class="text-3xl font-bold mb-4 text-pink-600">Our Memories</h2>
+        <p class="text-gray-600">A look at our favorite moments together.</p>
+        <div class="grid grid-cols-3 gap-2 mt-4">
+          <div class="bg-gray-200 h-16 rounded"></div>
+          <div class="bg-gray-200 h-16 rounded"></div>
+          <div class="bg-gray-200 h-16 rounded"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene" id="scene6">
+      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
+        <h2 class="text-3xl font-bold mb-4 text-teal-600">Leave a Message</h2>
+        <p class="text-gray-600 mb-4">Send your wishes or RSVP</p>
+        <div class="space-y-3">
+          <input type="text" placeholder="Your name" class="w-full p-2 border rounded-lg">
+          <textarea placeholder="Your message" class="w-full p-2 border rounded-lg h-20"></textarea>
+          <button class="bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition">Send Wishes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene" id="scene7">
+      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
+        <h2 class="text-3xl font-bold mb-4 text-orange-600">Location</h2>
+        <div class="w-80 h-48 bg-gradient-to-br from-green-200 to-blue-200 rounded-lg mx-auto flex items-center justify-center">
+          <p class="text-gray-600">📍 Interactive Map</p>
+        </div>
+        <p class="text-sm text-gray-500 mt-2">St. Mary's Cathedral, Yogyakarta</p>
+      </div>
+    </div>
+
+    <div class="scene" id="scene8">
+      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
+        <h2 class="text-3xl font-bold text-rose-500 mb-4">Thank You!</h2>
+        <p class="text-gray-700 mt-2">We can't wait to celebrate with you.</p>
+        <p class="text-sm text-gray-500 mt-4">With love, Kristiyanto & Isabella</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const scenes = document.querySelectorAll(".scene");
+    const backgrounds = [
+      document.getElementById("scene1Bg"),
+      document.getElementById("scene2Bg"),
+      document.getElementById("scene3Bg"),
+      document.getElementById("scene4Bg"),
+      document.getElementById("scene5Bg"),
+      document.getElementById("scene6Bg"),
+      document.getElementById("scene7Bg"),
+      document.getElementById("scene8Bg")
+    ];
+    const tree1 = document.getElementById("tree1");
+    const tree2 = document.getElementById("tree2");
+    const bush1 = document.getElementById("bush1");
+    const bush2 = document.getElementById("bush2");
+    const bkLogo = document.getElementById("bkLogo");
+
+    function animateScene() {
+      const scrollY = window.scrollY;
+      const viewportHeight = window.innerHeight;
+      const totalHeight = document.body.scrollHeight - viewportHeight;
+      const scrollProgress = scrollY / totalHeight;
+
+      // Animate each scene scale and fade
+      scenes.forEach((scene, i) => {
+        const sceneTop = i * viewportHeight;
+        const distance = scrollY - sceneTop;
+        const progress = 1 - Math.abs(distance / viewportHeight);
+
+        const scale = Math.max(0.8, Math.min(1, progress));
+        const opacity = Math.max(0, Math.min(1, progress * 2));
+
+        scene.style.transform = `scale(${scale})`;
+        scene.style.opacity = opacity;
+        scene.style.zIndex = Math.floor(opacity * 100) + 5;
+      });
+
+      // Background transitions with zoom effect
+      backgrounds.forEach((bg, i) => {
+        const sceneStart = i * viewportHeight;
+        const sceneEnd = (i + 1) * viewportHeight;
+        const sceneProgress = Math.min(1, Math.max(0, (scrollY - sceneStart) / viewportHeight));
+        
+        // Zoom effect for current background
+        const zoomScale = 1 + sceneProgress * 2.5;
+        const bgImg = bg.querySelector('img');
+        if (bgImg) {
+          bgImg.style.transform = `scale(${zoomScale})`;
+        }
+        
+        // Fade out current background as we approach next scene
+        const fadeStart = sceneEnd - viewportHeight * 0.3;
+        const fadeEnd = sceneEnd;
+        const fadeProgress = Math.min(1, Math.max(0, (scrollY - fadeStart) / (fadeEnd - fadeStart)));
+        
+        if (scrollY >= sceneStart && scrollY < sceneEnd) {
+          bg.style.opacity = 1 - fadeProgress;
+        } else if (scrollY >= sceneEnd) {
+          bg.style.opacity = 0;
+        } else {
+          bg.style.opacity = 0;
+        }
+        
+        // Show next background
+        if (i < backgrounds.length - 1 && scrollY >= sceneEnd - viewportHeight * 0.3) {
+          backgrounds[i + 1].style.opacity = fadeProgress;
+        }
+      });
+
+      // Always show first background initially
+      if (scrollY < viewportHeight * 0.7) {
+        backgrounds[0].style.opacity = 1;
+      }
+
+      // Trees & Bushes Animation
+      const gardenProgress = Math.min(scrollProgress * 2, 1);
+      const bushScale = 1 + gardenProgress * 0.8;
+      const bushTranslate = gardenProgress * 120;
+      const treeScale = Math.min(8, 3 + gardenProgress * 5);
+      const treeTranslate = gardenProgress * 500;
+      const logoScale = 1 + gardenProgress * 1.5;
+
+      if (bush1) bush1.style.transform = `translateX(-${bushTranslate}%) scale(${bushScale})`;
+      if (bush2) bush2.style.transform = `translateX(${bushTranslate}%) scale(${bushScale})`;
+      if (tree1) tree1.style.transform = `translateX(-${treeTranslate}%) scale(${treeScale})`;
+      if (tree2) tree2.style.transform = `translateX(${treeTranslate}%) scale(${treeScale})`;
+      if (bkLogo) bkLogo.style.transform = `scale(${logoScale})`;
+
+      // Maintain opacity for all elements
+      [bush1, bush2, tree1, tree2].forEach(el => {
+        if (el) el.style.opacity = 1;
+      });
+
+      requestAnimationFrame(animateScene);
+    }
+
+    // Start animation
+    requestAnimationFrame(animateScene);
+
+    // Smooth scrolling for better performance
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        requestAnimationFrame(animateScene);
+        ticking = true;
+        setTimeout(() => ticking = false, 16);
+      }
+    });
+  </script>
+</body>
+</html>

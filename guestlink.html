@@ -119,7 +119,7 @@
       const finalUrl = `${baseUrl}?to=${encodedName}`;
       const finalPhone = normalizePhone(phone);
 
-      let message = customMsg || `Hello [name]! You're invited to our wedding! 🎉 Here's your invitation link: [link]`;
+      let message = customMsg || `Halo [name]! Dengan penuh rasa syukur kami mengundang untuk hadir di hari bahagia kami! 🎉 Klik tautan berikut untuk melihat undangan: [link]`;
       message = message.replace(/\[name\]/g, name).replace(/\[link\]/g, finalUrl);
       const encodedMsg = encodeURIComponent(message);
       const waLink = `https://wa.me/${finalPhone}?text=${encodedMsg}`;

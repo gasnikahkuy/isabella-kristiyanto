@@ -21,6 +21,7 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-100 flex justify-center items-center min-h-screen">
+  
   <div id="lightbox" class="fixed inset-0 bg-black/80 flex items-center justify-center z-50 hidden">
   <img id="lightbox-img" src="" alt="Full view" class="max-h-[90vh] max-w-[90vw] rounded-xl shadow-lg scale-90 transition-transform duration-300" />
 </div>
@@ -36,14 +37,10 @@
   <div class="absolute inset-0 bg-white opacity-0"></div>
 </div>
 
-  
-  <!-- Border (now on top of background) -->
-  <div class="absolute inset-0 z-5 bg-[url('assets/border.png')] bg-no-repeat bg-center bg-contain pointer-events-none border-anim"></div>
-
   <!-- Content -->
 <div class="relative z-20 flex flex-col items-center space-y-4">
   <!-- Rounded translucent background wrapper -->
-  <div class="bg-yellow/50 backdrop-blur-sm rounded-3xl px-6 py-8 sm:px-10 sm:py-10 md:px-14 md:py-14 text-center shadow-lg z-10">
+  <div class="bg-yellow/50 rounded-4xl px-6 py-8 sm:px-10 sm:py-10 md:px-14 md:py-14 text-center z-10">
     <h2 class="font-custom text-yellow-600 animate-slide-fade text-bold text-[clamp(2rem,10vw,7rem)] leading-tight drop-shadow-lg">
       The wedding of
     </h2>
@@ -108,9 +105,10 @@
     Yth. <span id="inviteeName">tamu undangan</span>!
   </h1>
   
-  <button id="enterBtn" class="mt-20 px-6 py-3 text-black font-semibold rounded-full z-10" style="background-color: #FFD700;">
-    Buka Undangan
-  </button>
+<button id="enterBtn" class="mt-20 px-6 py-3 text-white font-semibold rounded-md z-10 border-4 focus:outline-none focus:ring-2" style="background-color: #9b8209; border-color: #dabc14;">
+  Buka Undangan
+</button>
+
 </div>
   </div>
 
@@ -459,8 +457,6 @@
   </div>
 </section>
 
-
-
     <!-- Section 6: Photo Gallery -->
     <section class="p-8 max-w-5xl mx-auto overflow-hidden relative">
       <h2 class="text-3xl font-bold text-center mb-8">Our Gallery</h2>
@@ -502,6 +498,91 @@
         </div>
       </div>
     </section>
+
+<!-- Section 7: Kado Digital -->
+<section class="p-8 max-w-5xl mx-auto bg-yellow-50 rounded-xl shadow-md mb-12">
+  <h2 class="text-3xl font-bold text-center mb-6 text-yellow-700">Kado Digital</h2>
+  
+  <p class="text-center mb-8 text-yellow-800 text-lg max-w-xl mx-auto leading-relaxed">
+    Doa restu Anda sangat berarti bagi kami.<br />
+    Jika Anda ingin memberikan tanda kasih,<br />
+    kami dengan senang hati menerima kado secara cashless.
+  </p>
+
+  <div class="flex flex-col sm:flex-row justify-center gap-12">
+    <!-- ATM 1 -->
+    <div class="relative flex flex-col items-center w-80">
+      <img src="assets/ATM1.png" alt="ATM 1" class="w-full h-auto rounded-lg shadow-md" />
+      
+      <!-- Rekening Info Overlay -->
+      <div class="absolute bottom-28 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-80 rounded-full px-6 py-2 whitespace-nowrap text-center">
+        <p class="text-white font-semibold text-base" id="acc1">9000045413185</p>
+        <p class="text-white text-sm">a.n : KRISTIYANTO</p>
+      </div>
+
+      <!-- Copy Button -->
+      <button
+        onclick="copyToClipboard('acc1', this)"
+        class="mt-6 px-6 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition"
+      >
+        Copy Nomor Rekening
+      </button>
+    </div>
+
+    <!-- ATM 2 -->
+    <div class="relative flex flex-col items-center w-80">
+      <img src="assets/ATM1.png" alt="ATM 2" class="w-full h-auto rounded-lg shadow-md" />
+      
+      <!-- Rekening Info Overlay -->
+      <div class="absolute bottom-28 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-80 rounded-full px-6 py-2 whitespace-nowrap text-center">
+        <p class="text-white font-semibold text-base" id="acc2">1140025737605</p>
+        <p class="text-white text-sm">a.n : ISABELLA CARISSAF</p>
+      </div>
+
+      <!-- Copy Button -->
+      <button
+        onclick="copyToClipboard('acc2', this)"
+        class="mt-6 px-6 py-2 bg-yellow-600 text-white rounded hover:bg-yellow-700 transition"
+      >
+        Copy Nomor Rekening
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- JavaScript -->
+<script>
+  function copyToClipboard(id, btn) {
+    const accountText = document.getElementById(id).textContent.trim();
+    navigator.clipboard.writeText(accountText).then(() => {
+      const original = btn.textContent;
+      btn.textContent = "Copied!";
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = original;
+        btn.disabled = false;
+      }, 1500);
+    });
+  }
+</script>
+</section>
+
+<script>
+  function copyToClipboard(id, btn) {
+    const text = document.getElementById(id).textContent.trim();
+    navigator.clipboard.writeText(text).then(() => {
+      const originalText = btn.textContent;
+      btn.textContent = "Copied!";
+      btn.disabled = true;
+      setTimeout(() => {
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }, 1500);
+    });
+  }
+</script>
+
+
 
 <!-- Section 8: Wishes -->
 <section class="p-8 max-w-xl mx-auto font-serif text-[#f5deb3]">

@@ -241,8 +241,10 @@ button:hover {
 #cover {
   position: fixed;
   inset: 0;
+  width: 100vw;
+  height: 100vh;
   background-image: url('assets/landing.png');
-  background-size: contain;
+  background-size: cover; /* fills screen without empty space */
   background-repeat: no-repeat;
   background-position: center;
   display: flex;
@@ -252,7 +254,6 @@ button:hover {
   text-align: center;
   z-index: 50;
   color: white;
-  
   /* Smooth transition for the slide-up animation */
   transition: transform 0.7s ease, opacity 0.7s ease;
   /* Initial state: Fully visible, at original position */

@@ -21,7 +21,6 @@ function playMusic() {
   backgroundMusic.play().then(() => {
     isPlaying = true;
     audioIcon.textContent = '🎵';
-    audioText.textContent = 'Music On';
     audioControl.classList.add('playing');
   }).catch(error => {
     console.log('Autoplay prevented:', error);
@@ -33,7 +32,6 @@ function pauseMusic() {
   backgroundMusic.pause();
   isPlaying = false;
   audioIcon.textContent = '🔇';
-  audioText.textContent = 'Music Off';
   audioControl.classList.remove('playing');
 }
 

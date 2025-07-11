@@ -92,7 +92,7 @@ const observer = new IntersectionObserver((entries) => {
 document.addEventListener('DOMContentLoaded', () => {
   // Set invitee name
   const nameEl = document.getElementById('inviteeName');
-  if (nameEl) nameEl.textContent = getInviteeName();
+  nameEl.innerHTML = `Yth.<br>${getInviteeName().replace(/\n/g, '<br>')}!`;
 
   // Countdown
   updateCountdown();

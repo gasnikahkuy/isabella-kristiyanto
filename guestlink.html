@@ -1,174 +1,198 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Wedding Link Generator</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      padding: 0;
-      background: #f9f9f9;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-weight: bold;
-    }
-    input, textarea, button {
-      width: 100%;
-      margin-top: 5px;
-      padding: 10px;
-      font-size: 1em;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-    button {
-      background: #28a745;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 20px;
-    }
-    .result {
-      margin-top: 30px;
-    }
-    .entry {
-      margin-bottom: 20px;
-      padding: 10px;
-      background: #f0f0f0;
-      border-radius: 8px;
-    }
-    .entry p {
-      margin: 5px 0;
-      word-break: break-word;
-    }
-    .whatsapp-link {
-      display: inline-block;
-      margin-top: 5px;
-      background: #25D366;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    @media (max-width: 500px) {
-      body {
-        margin: 10px;
-      }
-      .container {
-        padding: 15px;
-      }
-    }
-  </style>
+
+ <meta charset="UTF-8">
+
+ <title>List Digital Dropdown</title>
+
+ <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+ <style>
+
+  body {
+
+   font-family: Arial, sans-serif;
+
+   padding: 2rem;
+
+   background: #f5f5f5;
+
+  }
+
+  h2 {
+
+   margin-bottom: 1rem;
+
+  }
+
+  select {
+
+   padding: 0.5rem;
+
+   font-size: 1rem;
+
+  }
+
+  #result {
+
+   margin-top: 1rem;
+
+   padding: 1rem;
+
+   background: white;
+
+   border-radius: 6px;
+
+   box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+  }
+
+  a {
+
+   color: #0066cc;
+
+   text-decoration: none;
+
+   font-weight: bold;
+
+  }
+
+  a:hover {
+
+   text-decoration: underline;
+
+  }
+
+ </style>
+
 </head>
+
 <body>
-  <div class="container">
-    <h1>Wedding Link Generator</h1>
 
-    <h3>💬 Single Entry</h3>
-    <label for="name">Guest Name</label>
-    <input type="text" id="name" placeholder="e.g., Jonathan Smith" />
+ <h2>Select from List Digital</h2>
 
-    <label for="phone">WhatsApp Number</label>
-    <input type="text" id="phone" placeholder="e.g., 081234567890 or 6281234567890" />
+ <select id="dropdown">
 
-    <button onclick="generateSingle()">Generate & Add</button>
+  <option value="">Loading...</option>
 
-    <hr style="margin: 30px 0;">
+ </select>
 
-    <h3>📋 Bulk Entry (Name - Number per line)</h3>
-    <label for="bulkInput">Example:<br>Jonathan Smith - 081234567890</label>
-    <textarea id="bulkInput" rows="6" placeholder="Paste multiple names and numbers here..."></textarea>
+ <div id="result"></div>
 
-    <button onclick="generateBulk()">Generate Bulk</button>
 
-    <label for="customMsg">Custom Message (Optional)</label>
-    <textarea id="customMsg" rows="3">Halo [name]! Dengan penuh rasa syukur kami mengundang untuk hadir di hari bahagia kami! 🎉 Klik tautan berikut untuk melihat undangan: [link]</textarea>
 
-    <div class="result" id="result"></div>
-  </div>
+ <script>
 
-  <script>
-    const baseUrl = "https://gasnikahkuy.github.io/isabella-kristiyanto/";
+  google.charts.load('current', { packages: ['corechart'] });
 
-    function normalizePhone(phone) {
-      let cleaned = phone.replace(/[^0-9]/g, "");
-      if (cleaned.startsWith("0")) {
-        cleaned = "62" + cleaned.slice(1);
+  google.charts.setOnLoadCallback(init);
+
+
+
+  const sheetUrl = 'https://docs.google.com/spreadsheets/d/1QXZWiZX_Muxd4X_XtLUSu5U1gyv3qLox1KOUJeArwxk/gviz/tq?sheet=listdigital&tq=' + encodeURIComponent('SELECT B, C');
+
+
+
+  let dataRows = [];
+
+
+
+  function init() {
+
+   fetch(sheetUrl)
+
+    .then(res => res.text())
+
+    .then(rep => {
+
+     const json = JSON.parse(rep.substr(47).slice(0, -2));
+
+     const rows = json.table.rows;
+
+
+
+     const dropdown = document.getElementById('dropdown');
+
+     dropdown.innerHTML = '<option value="">-- Select an option --</option>';
+
+
+
+     dataRows = rows.map(r => ({
+
+      key: r.c[0]?.v || '',
+
+      value: r.c[1]?.v || ''
+
+     }));
+
+
+
+     dataRows.forEach((row, i) => {
+
+      const option = document.createElement('option');
+
+      option.value = i; // index
+
+      option.textContent = row.key;
+
+      dropdown.appendChild(option);
+
+     });
+
+
+
+     dropdown.addEventListener('change', e => {
+
+      const idx = e.target.value;
+
+      const resultDiv = document.getElementById('result');
+
+      if (idx === '') {
+
+       resultDiv.innerHTML = '';
+
+       return;
+
       }
-      return cleaned;
-    }
 
-    function createEntry(name, phone, customMsg) {
-      const encodedName = encodeURIComponent(name);
-      const finalUrl = `${baseUrl}?to=${encodedName}`;
-      const finalPhone = normalizePhone(phone);
+      const selected = dataRows[idx];
 
-      let message = customMsg || `Halo [name]! Dengan penuh rasa syukur kami mengundang untuk hadir di hari bahagia kami! 🎉 Klik tautan berikut untuk melihat undangan: [link]`;
-      message = message.replace(/\[name\]/g, name).replace(/\[link\]/g, finalUrl);
-      const encodedMsg = encodeURIComponent(message);
-      const waLink = `https://wa.me/${finalPhone}?text=${encodedMsg}`;
+      const url = selected.value;
 
-      const entryDiv = document.createElement("div");
-      entryDiv.className = "entry";
-      entryDiv.innerHTML = `
-        <p><strong>${name}</strong></p>
-        <p><a href="${finalUrl}" target="_blank">${finalUrl}</a></p>
-        <a class="whatsapp-link" href="${waLink}" target="_blank">Send via WhatsApp</a>
-      `;
 
-      document.getElementById("result").appendChild(entryDiv);
-    }
 
-    function generateSingle() {
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const customMsg = document.getElementById("customMsg").value.trim();
+      // Simple check if it's a URL, otherwise just print plain text
 
-      if (!name || !phone) {
-        alert("Please input both name and phone number.");
-        return;
-      }
+      const isUrl = url.startsWith("http://") || url.startsWith("https://");
 
-      createEntry(name, phone, customMsg);
 
-      // Clear input
-      document.getElementById("name").value = "";
-      document.getElementById("phone").value = "";
-    }
 
-    function generateBulk() {
-      const lines = document.getElementById("bulkInput").value.trim().split("\n");
-      const customMsg = document.getElementById("customMsg").value.trim();
-      if (lines.length === 0 || lines[0].trim() === "") {
-        alert("Bulk input is empty!");
-        return;
-      }
+      resultDiv.innerHTML = isUrl
 
-      lines.forEach(line => {
-        const [namePart, phonePart] = line.split("-").map(s => s.trim());
-        if (namePart && phonePart) {
-          createEntry(namePart, phonePart, customMsg);
-        }
-      });
+       ? `<strong>Result:</strong><br><a href="${url}" target="_blank">${url}</a>`
 
-      document.getElementById("bulkInput").value = "";
-    }
-  </script>
+       : `<strong>Result:</strong><br>${url}`;
+
+     });
+
+    })
+
+    .catch(err => {
+
+     console.error('Failed to load sheet', err);
+
+     document.getElementById('dropdown').innerHTML = '<option>Error loading data</option>';
+
+    });
+
+  }
+
+ </script>
+
 </body>
+
 </html>
+

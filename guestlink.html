@@ -110,7 +110,7 @@
   <div id="tableContainer">Loading...</div>
 
   <script>
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1QXZWiZX_Muxd4X_XtLUSu5U1gyv3qLox1KOUJeArwxk/gviz/tq?sheet=listdigital&tq=' + encodeURIComponent('SELECT B, C, D');
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1QXZWiZX_Muxd4X_XtLUSu5U1gyv3qLox1KOUJeArwxk/gviz/tq?sheet=listdigital&tq=' + encodeURIComponent('SELECT B, C, D, E');
     let allRows = [];
 
     function normalizePhoneNumber(number) {
@@ -160,16 +160,18 @@ Bella dan Kris`;
         return;
       }
 
-      let html = '<table><thead><tr><th>Name</th><th>Link</th><th>WhatsApp</th></tr></thead><tbody>';
+      let html = '<table><thead><tr><th>Name</th><th>Link</th><th>Asal</th><th>WhatsApp</th></tr></thead><tbody>';
       rows.forEach(row => {
         const name = row[0] || '';
         const link = row[1] || '';
         const phone = row[2] || '';
+        const asal = row[3] || '';
         const waLink = createWhatsAppLink(name, link, phone);
 
         html += `<tr>
           <td data-label="Name">${name}</td>
           <td data-label="Link"><a href="${link}" target="_blank">View Link</a></td>
+          <td data-label="Asal">${asal}</td>
           <td data-label="WhatsApp">
             <a href="${waLink}" target="_blank">
               <button>Send to WhatsApp</button>
@@ -189,7 +191,8 @@ Bella dan Kris`;
           allRows = json.table.rows.map(r => [
             r.c[0]?.v || '',
             r.c[1]?.v || '',
-            r.c[2]?.v || ''
+            r.c[2]?.v || '',
+            r.c[3]?.v || ''
           ]);
           renderTable(allRows);
         })

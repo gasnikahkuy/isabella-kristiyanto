@@ -2,225 +2,185 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>📋 Digital List Search</title>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <title>📋 Wedding Guest List</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    :root {
-      --primary: #0066cc;
-      --bg: #f0f4f8;
-      --white: #ffffff;
-      --gray: #888;
-      --border-radius: 8px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
-      margin: 0;
+      background: #f7f9fb;
       padding: 2rem;
+      margin: 0;
       color: #333;
     }
 
     h2 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
       text-align: center;
+      margin-bottom: 1.5rem;
     }
 
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: var(--white);
-      border-radius: var(--border-radius);
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-    }
-
-    .input-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-      align-items: stretch;
-    }
-
-    .dropdown-wrapper {
-      flex: 1;
-      position: relative;
-      min-width: 200px;
-    }
-
-    input[list] {
-      padding: 0.75rem 2.5rem 0.75rem 1rem;
-      font-size: 1rem;
+    table {
       width: 100%;
-      border-radius: var(--border-radius);
-      border: 1px solid #ccc;
-      transition: border-color 0.2s ease;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      overflow: hidden;
     }
 
-    input[list]:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .clear-btn {
-      position: absolute;
-      right: 0.75rem;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      font-size: 1.2rem;
-      color: var(--gray);
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .clear-btn:hover {
-      color: #000;
-    }
-
-    #refreshBtn {
-      padding: 0.75rem 1.25rem;
-      font-size: 1rem;
-      background: var(--primary);
-      color: var(--white);
-      border: none;
-      border-radius: var(--border-radius);
-      cursor: pointer;
-      white-space: nowrap;
-      transition: background 0.2s ease;
-    }
-
-    #refreshBtn:hover {
-      background: #004da8;
-    }
-
-    #result {
-      margin-top: 1rem;
+    th, td {
       padding: 1rem;
-      background: #fdfdfd;
-      border-left: 4px solid var(--primary);
-      border-radius: var(--border-radius);
-      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #0066cc;
+      color: white;
     }
 
     a {
-      color: var(--primary);
+      color: #0066cc;
       text-decoration: none;
-      font-weight: bold;
     }
 
-    a:hover {
-      text-decoration: underline;
+    button {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-size: 0.95rem;
+      border-radius: 6px;
+      cursor: pointer;
     }
 
-    @media (max-width: 500px) {
-      .input-row {
-        flex-direction: column;
+    button:hover {
+      background: #1ebe5d;
+    }
+
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
       }
 
-      #refreshBtn {
+      th {
+        position: sticky;
+        top: 0;
+      }
+
+      td {
+        padding: 0.75rem;
+        border-bottom: 1px solid #ddd;
+      }
+
+      td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      button {
         width: 100%;
+        margin-top: 0.5rem;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>📋 Search from List Digital</h2>
-
-    <div class="input-row">
-      <div class="dropdown-wrapper">
-        <input type="text" id="searchInput" list="dataList" placeholder="Type or choose..." autocomplete="off" />
-        <button id="clearBtn" class="clear-btn" title="Clear">×</button>
-        <datalist id="dataList"></datalist>
-      </div>
-
-      <button id="refreshBtn">🔄 Refresh List</button>
-    </div>
-
-    <div id="result"></div>
-  </div>
+  <h2>📋 Wedding Guest List</h2>
+  <div id="tableContainer">Loading...</div>
 
   <script>
-    google.charts.load('current', { packages: ['corechart'] });
-    google.charts.setOnLoadCallback(fetchData);
+    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1QXZWiZX_Muxd4X_XtLUSu5U1gyv3qLox1KOUJeArwxk/gviz/tq?sheet=listdigital&tq=' + encodeURIComponent('SELECT B, C, D');
 
-    const sheetUrl = 'https://docs.google.com/spreadsheets/d/1QXZWiZX_Muxd4X_XtLUSu5U1gyv3qLox1KOUJeArwxk/gviz/tq?sheet=listdigital&tq=' + encodeURIComponent('SELECT B, C');
-    let dataRows = [];
+    function normalizePhoneNumber(number) {
+      if (!number) return '';
+      number = String(number).replace(/\D/g, ''); // remove non-digit characters
 
-    const input = document.getElementById('searchInput');
-    const datalist = document.getElementById('dataList');
-    const resultDiv = document.getElementById('result');
-    const clearBtn = document.getElementById('clearBtn');
-    const refreshBtn = document.getElementById('refreshBtn');
+      if (number.startsWith('0')) {
+        return '62' + number.slice(1);
+      } else if (number.startsWith('62')) {
+        return number;
+      } else if (number.startsWith('8')) {
+        return '62' + number;
+      }
+      return number; // fallback
+    }
+
+    function createWhatsAppLink(name, link, rawNumber) {
+  const phone = normalizePhoneNumber(rawNumber);
+  const safeLink = encodeURI(link);
+  const message = `Yth. Bapak/Ibu/Saudara/i
+${name}
+
+Salam damai dan sukacita,
+
+Dengan penuh syukur, kami percaya bahwa Tuhan senantiasa menyempurnakan segala sesuatu pada waktu-Nya. Dalam kasih-Nya, kami dipersatukan dalam ikatan pernikahan suci. Kiranya berkat dan penyertaan Tuhan senantiasa menaungi perjalanan hidup kami ke depan.
+
+Dengan segala hormat dan kerendahan hati, kami mengundang Bapak/Ibu/Saudara/i, sebagai sahabat dan bagian berharga dalam hidup kami, untuk hadir dan menyaksikan hari bahagia kami.
+
+Informasi lengkap mengenai acara pernikahan kami dapat diakses melalui tautan berikut:
+${safeLink}
+
+Merupakan sukacita tersendiri bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan turut mendoakan kelangsungan pernikahan kami.
+
+Terima kasih atas perhatian dan doa restunya.
+
+Hormat kami,
+Bella dan Kris`;
+
+  const encodedMsg = encodeURIComponent(message);
+  return `https://wa.me/${phone}?text=${encodedMsg}`;
+}
+
+    function renderTable(rows) {
+      const container = document.getElementById('tableContainer');
+      if (!rows.length) {
+        container.innerHTML = '<p>No data available.</p>';
+        return;
+      }
+
+      let html = '<table><thead><tr><th>Name</th><th>Link</th><th>WhatsApp</th></tr></thead><tbody>';
+      rows.forEach(row => {
+        const name = row[0] || '';
+        const link = row[1] || '';
+        const phone = row[2] || '';
+        const waLink = createWhatsAppLink(name, link, phone);
+
+        html += `<tr>
+          <td data-label="Name">${name}</td>
+          <td data-label="Link"><a href="${link}" target="_blank">View Link</a></td>
+          <td data-label="WhatsApp">
+            <a href="${waLink}" target="_blank">
+              <button>Send to WhatsApp</button>
+            </a>
+          </td>
+        </tr>`;
+      });
+      html += '</tbody></table>';
+      container.innerHTML = html;
+    }
 
     function fetchData() {
       fetch(sheetUrl)
         .then(res => res.text())
         .then(rep => {
           const json = JSON.parse(rep.substr(47).slice(0, -2));
-          const rows = json.table.rows;
-
-          dataRows = rows.map(r => ({
-            key: r.c[0]?.v || '',
-            value: r.c[1]?.v || ''
-          }));
-
-          updateDatalist();
+          const rows = json.table.rows.map(r => [
+            r.c[0]?.v || '',
+            r.c[1]?.v || '',
+            r.c[2]?.v || ''
+          ]);
+          renderTable(rows);
         })
         .catch(err => {
-          console.error('Failed to load sheet', err);
-          datalist.innerHTML = '';
+          console.error('Failed to load data', err);
+          document.getElementById('tableContainer').innerHTML = '<p>Error loading data.</p>';
         });
     }
 
-    function updateDatalist() {
-      datalist.innerHTML = '';
-      dataRows.forEach(row => {
-        const option = document.createElement('option');
-        option.value = row.key;
-        datalist.appendChild(option);
-      });
-    }
-
-    function handleSelection(value) {
-      const selected = dataRows.find(row => row.key === value);
-      if (!selected) {
-        resultDiv.innerHTML = `<em>No result found for "<strong>${value}</strong>"</em>`;
-        return;
-      }
-
-      const url = selected.value;
-      const isUrl = url.startsWith("http://") || url.startsWith("https://");
-
-      resultDiv.innerHTML = isUrl
-        ? `<strong>Result:</strong><br><a href="${url}" target="_blank">${url}</a>`
-        : `<strong>Result:</strong><br>${url}`;
-    }
-
-    input.addEventListener('input', (e) => {
-      handleSelection(e.target.value);
-    });
-
-    clearBtn.addEventListener('click', () => {
-      input.value = '';
-      resultDiv.innerHTML = '';
-      input.focus();
-    });
-
-    refreshBtn.addEventListener('click', () => {
-      resultDiv.innerHTML = '';
-      input.value = '';
-      fetchData();
-    });
+    fetchData();
   </script>
 </body>
 </html>

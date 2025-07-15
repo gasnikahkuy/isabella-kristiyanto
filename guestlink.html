@@ -18,6 +18,15 @@
       margin-bottom: 1.5rem;
     }
 
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -89,14 +98,24 @@
 </head>
 <body>
   <h2>📋 Wedding Guest List</h2>
+
+  <div style="max-width: 500px; margin: 0 auto 1rem;">
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="🔍 Search by name..."
+    />
+  </div>
+
   <div id="tableContainer">Loading...</div>
 
   <script>
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/1QXZWiZX_Muxd4X_XtLUSu5U1gyv3qLox1KOUJeArwxk/gviz/tq?sheet=listdigital&tq=' + encodeURIComponent('SELECT B, C, D');
+    let allRows = [];
 
     function normalizePhoneNumber(number) {
       if (!number) return '';
-      number = String(number).replace(/\D/g, ''); // remove non-digit characters
+      number = String(number).replace(/\D/g, '');
 
       if (number.startsWith('0')) {
         return '62' + number.slice(1);
@@ -105,13 +124,13 @@
       } else if (number.startsWith('8')) {
         return '62' + number;
       }
-      return number; // fallback
+      return number;
     }
 
     function createWhatsAppLink(name, link, rawNumber) {
-  const phone = normalizePhoneNumber(rawNumber);
-  const safeLink = encodeURI(link);
-  const message = `Yth. Bapak/Ibu/Saudara/i
+      const phone = normalizePhoneNumber(rawNumber);
+      const safeLink = encodeURI(link);
+      const message = `Yth. Bapak/Ibu/Saudara/i
 ${name}
 
 Salam damai dan sukacita,
@@ -130,14 +149,14 @@ Terima kasih atas perhatian dan doa restunya.
 Hormat kami,
 Bella dan Kris`;
 
-  const encodedMsg = encodeURIComponent(message);
-  return `https://wa.me/${phone}?text=${encodedMsg}`;
-}
+      const encodedMsg = encodeURIComponent(message);
+      return `https://wa.me/${phone}?text=${encodedMsg}`;
+    }
 
     function renderTable(rows) {
       const container = document.getElementById('tableContainer');
       if (!rows.length) {
-        container.innerHTML = '<p>No data available.</p>';
+        container.innerHTML = '<p>No matching data.</p>';
         return;
       }
 
@@ -167,18 +186,24 @@ Bella dan Kris`;
         .then(res => res.text())
         .then(rep => {
           const json = JSON.parse(rep.substr(47).slice(0, -2));
-          const rows = json.table.rows.map(r => [
+          allRows = json.table.rows.map(r => [
             r.c[0]?.v || '',
             r.c[1]?.v || '',
             r.c[2]?.v || ''
           ]);
-          renderTable(rows);
+          renderTable(allRows);
         })
         .catch(err => {
           console.error('Failed to load data', err);
           document.getElementById('tableContainer').innerHTML = '<p>Error loading data.</p>';
         });
     }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+      const keyword = e.target.value.trim().toLowerCase();
+      const filtered = allRows.filter(row => row[0]?.toLowerCase().includes(keyword));
+      renderTable(filtered);
+    });
 
     fetchData();
   </script>

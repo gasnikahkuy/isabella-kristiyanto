@@ -128,9 +128,12 @@
     }
 
     function createWhatsAppLink(name, link, rawNumber) {
-      const phone = normalizePhoneNumber(rawNumber);
-      const safeLink = encodeURI(link);
-      const message = `Yth. Bapak/Ibu/Saudara/i
+  const phone = normalizePhoneNumber(rawNumber);
+
+  // Replace raw space characters with %20, preserve %0A
+  const cleanLink = link.replace(/ /g, '%20');
+
+  const message = `Yth. Bapak/Ibu/Saudara/i
 ${name}
 
 Salam damai dan sukacita,
@@ -140,7 +143,7 @@ Dengan penuh syukur, kami percaya bahwa Tuhan senantiasa menyempurnakan segala s
 Dengan segala hormat dan kerendahan hati, kami mengundang Bapak/Ibu/Saudara/i, sebagai sahabat dan bagian berharga dalam hidup kami, untuk hadir dan menyaksikan hari bahagia kami.
 
 Informasi lengkap mengenai acara pernikahan kami dapat diakses melalui tautan berikut:
-${safeLink}
+${cleanLink}
 
 Merupakan sukacita tersendiri bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan turut mendoakan kelangsungan pernikahan kami.
 
@@ -149,9 +152,11 @@ Terima kasih atas perhatian dan doa restunya.
 Hormat kami,
 Bella dan Kris`;
 
-      const encodedMsg = encodeURIComponent(message);
-      return `https://wa.me/${phone}?text=${encodedMsg}`;
-    }
+  const encodedMsg = encodeURIComponent(message);
+  return `https://wa.me/${phone}?text=${encodedMsg}`;
+}
+
+
 
     function renderTable(rows) {
       const container = document.getElementById('tableContainer');

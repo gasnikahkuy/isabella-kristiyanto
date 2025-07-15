@@ -116,7 +116,6 @@
     function normalizePhoneNumber(number) {
       if (!number) return '';
       number = String(number).replace(/\D/g, '');
-
       if (number.startsWith('0')) {
         return '62' + number.slice(1);
       } else if (number.startsWith('62')) {
@@ -127,14 +126,13 @@
       return number;
     }
 
-    function createWhatsAppLink(name, link, rawNumber) {
-  const phone = normalizePhoneNumber(rawNumber);
+    function createWhatsAppLink(name, link, rawNumber, asal) {
+      const phone = normalizePhoneNumber(rawNumber);
+      const cleanLink = link.replace(/ /g, '%20'); // Preserve %0A, just replace raw spaces
 
-  // Replace raw space characters with %20, preserve %0A
-  const cleanLink = link.replace(/ /g, '%20');
-
-  const message = `Yth. Bapak/Ibu/Saudara/i
+      const message = `Yth. Bapak/Ibu/Saudara/i
 ${name}
+(${asal})
 
 Salam damai dan sukacita,
 
@@ -152,11 +150,9 @@ Terima kasih atas perhatian dan doa restunya.
 Hormat kami,
 Bella dan Kris`;
 
-  const encodedMsg = encodeURIComponent(message);
-  return `https://wa.me/${phone}?text=${encodedMsg}`;
-}
-
-
+      const encodedMsg = encodeURIComponent(message);
+      return `https://wa.me/${phone}?text=${encodedMsg}`;
+    }
 
     function renderTable(rows) {
       const container = document.getElementById('tableContainer');
@@ -171,7 +167,7 @@ Bella dan Kris`;
         const link = row[1] || '';
         const phone = row[2] || '';
         const asal = row[3] || '';
-        const waLink = createWhatsAppLink(name, link, phone);
+        const waLink = createWhatsAppLink(name, link, phone, asal);
 
         html += `<tr>
           <td data-label="Name">${name}</td>

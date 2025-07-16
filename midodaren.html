@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Undangan Midodareni</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Georgia', serif;
+      margin: 0;
+      padding: 20px;
+      background: #fffefc;
+      color: #333;
+      line-height: 1.6;
+      text-align: center;
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 100%;
+      height: 100%;
+      background: url('midodaren/flowerLeftA.png') no-repeat center center;
+      background-size: contain;
+      transform: translate(-50%, -50%);
+      filter: blur(6px) brightness(1.05);
+      opacity: 0.2;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    h1 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .names {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .info {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .bold {
+      font-weight: bold;
+    }
+
+    .personal {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+      white-space: pre-line;
+    }
+
+    .address {
+      font-style: italic;
+      text-decoration: underline;
+      margin-top: 5px;
+      display: block;
+    }
+
+    .map-link {
+      display: inline-block;
+      margin-top: 10px;
+      text-decoration: none;
+      color: #ffffff;
+      background-color: #4CAF50;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .map-link:hover {
+      background-color: #388e3c;
+    }
+
+    .footer {
+      margin-top: 30px;
+      font-size: 0.95rem;
+      padding: 0 10px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 15px;
+      }
+
+      .names {
+        font-size: 1.5rem;
+      }
+
+      .info, .footer {
+        font-size: 0.95rem;
+      }
+
+      .map-link {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Bandar Lampung, Juli 2025</h1>
+
+  <p id="personalized" class="personal"></p>
+
+  <p>Dengan penuh syukur atas kasih dan berkat Tuhan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara<br><strong>Midodareni</strong> putra-putri kami:</p>
+
+  <div class="names">Isabella Carissa Fibriyanti</div>
+  <p class="info">Putri kedua dari Bapak FX Nur Santoso & Ibu Christina Sudarmi</p>
+
+  <div class="names">Antonius Kristiyanto</div>
+  <p class="info">Putra tunggal dari Bapak Y. Krisno Utomo & Ibu Zefi Sugiyatni</p>
+
+  <p class="info">Yang akan dilaksanakan pada:</p>
+  <p class="bold">Jumat, 25 Juli 2025</p>
+  <p class="bold">Waktu: 18.15 – selesai</p>
+  <p class="info">Tempat: Rumah Bapak FX Nur Santoso</p>
+  <span class="address">Jl. P Batam I, Gg. Sadewa, Way Halim Permai, Way Halim</span>
+
+  <a class="map-link" href="https://maps.app.goo.gl/E8whfiRKtxD6jr4A9" target="_blank" rel="noopener noreferrer">
+    Klik untuk melihat lokasi
+  </a>
+
+  <div class="footer">
+    <p>
+      Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu demi kelancaran dan keberkahan acara ini.
+    </p>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const name = urlParams.get("to");
+    const target = document.getElementById("personalized");
+
+    if (name) {
+      const decoded = decodeURIComponent(name).replace(/%0A/g, "\n");
+      target.innerText = "Yth. " + decoded;
+    }
+  </script>
+</body>
+</html>

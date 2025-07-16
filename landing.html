@@ -31,18 +31,42 @@
   </header>
 
   <!-- Main Gallery Section -->
-  <main class="w-full min-h-screen bg-white flex flex-col items-center justify-center px-4 overflow-hidden relative py-10">
+  <main class="w-full h-screen bg-white flex flex-col items-center justify-center px-4 overflow-hidden relative">
     <h2 class="text-3xl sm:text-4xl font-bold text-center mb-8">Our Gallery</h2>
     <div class="relative w-full overflow-hidden">
       <div class="flex animate-scroll w-max">
-        <!-- Looping Gallery Images -->
-        <!-- TIP: If needed, generate image tags with JS or backend in future -->
-        <!-- You can remove duplicate images if you're optimizing load -->
-        ${[...Array(2)].map(() => `
-          ${[...Array(15)].map((_, i) => `
-            <img src="assets/gal${i + 1}.png" alt="Gallery ${i + 1}" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
-          `).join('')}
-        `).join('')}
+        <!-- Image Set 1 -->
+        <img src="assets/gal1.png" alt="Gallery 1" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal2.png" alt="Gallery 2" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal3.png" alt="Gallery 3" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal4.png" alt="Gallery 4" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal5.png" alt="Gallery 5" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal6.png" alt="Gallery 6" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal7.png" alt="Gallery 7" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal8.png" alt="Gallery 8" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal9.png" alt="Gallery 9" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal10.png" alt="Gallery 10" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal11.png" alt="Gallery 11" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal12.png" alt="Gallery 12" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal13.png" alt="Gallery 13" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal14.png" alt="Gallery 14" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal15.png" alt="Gallery 15" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <!-- Duplicate Set for Loop -->
+        <img src="assets/gal1.png" alt="Gallery 1" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal2.png" alt="Gallery 2" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal3.png" alt="Gallery 3" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal4.png" alt="Gallery 4" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal5.png" alt="Gallery 5" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal6.png" alt="Gallery 6" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal7.png" alt="Gallery 7" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal8.png" alt="Gallery 8" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal9.png" alt="Gallery 9" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal10.png" alt="Gallery 10" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal11.png" alt="Gallery 11" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal12.png" alt="Gallery 12" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal13.png" alt="Gallery 13" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal14.png" alt="Gallery 14" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
+        <img src="assets/gal15.png" alt="Gallery 15" class="w-64 sm:w-72 flex-shrink-0 rounded-xl mx-2" />
       </div>
     </div>
   </main>

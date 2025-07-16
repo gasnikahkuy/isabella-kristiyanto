@@ -5,21 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Undangan Midodareni</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
-      font-family: 'Georgia', serif;
       margin: 0;
-      padding: 20px;
-      background: #fffefc;
-      color: #333;
-      line-height: 1.6;
-      text-align: center;
-      position: relative;
+      padding: 0;
+      font-family: 'Georgia', serif;
+      background-color: #fffefc;
       overflow-x: hidden;
-      min-height: 100vh;
+      color: #333;
     }
 
     body::before {
@@ -38,9 +32,59 @@
       pointer-events: none;
     }
 
-    h1 {
-      font-size: 1.2rem;
+    .cover {
+      position: fixed;
+      inset: 0;
+      background-color: #fffaf4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 10;
+      transition: transform 1s ease-in-out;
+    }
+
+    .cover.hidden {
+      transform: translateY(-100%);
+    }
+
+    .cover h1 {
+      font-size: 2rem;
       margin-bottom: 20px;
+    }
+
+    .cover p {
+      font-size: 1rem;
+      margin-bottom: 30px;
+    }
+
+    .cover button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .cover button:hover {
+      background-color: #388e3c;
+    }
+
+    .main-content {
+      padding: 20px;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      transition: opacity 1s ease;
+    }
+
+    .hidden-content {
+      opacity: 0;
+      pointer-events: none;
     }
 
     .names {
@@ -50,7 +94,7 @@
       margin: 10px 0;
     }
 
-    .info {
+    .info, .footer {
       font-size: 1rem;
       margin-bottom: 8px;
     }
@@ -89,17 +133,7 @@
       background-color: #388e3c;
     }
 
-    .footer {
-      margin-top: 30px;
-      font-size: 0.95rem;
-      padding: 0 10px;
-    }
-
     @media (max-width: 600px) {
-      body {
-        padding: 15px;
-      }
-
       .names {
         font-size: 1.5rem;
       }
@@ -112,47 +146,80 @@
         padding: 8px 16px;
         font-size: 0.9rem;
       }
+
+      .cover h1 {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Bandar Lampung, Juli 2025</h1>
 
-  <p id="personalized" class="personal"></p>
+  <!-- Cover -->
+  <div class="cover" id="cover">
+    <h1>Undangan Midodareni</h1>
+    <p>Kepada Yth.<br><span id="coverName">Tamu Undangan</span></p>
+    <button onclick="openInvitation()">Buka Undangan</button>
+  </div>
 
-  <p>Dengan penuh syukur atas kasih dan berkat Tuhan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara<br><strong>Midodareni</strong> putra-putri kami:</p>
+  <!-- Music -->
+  <audio id="bgMusic" src="midodaren/midodaren.mp4" type="audio/mp4"></audio>
 
-  <div class="names">Isabella Carissa Fibriyanti</div>
-  <p class="info">Putri kedua dari Bapak FX Nur Santoso & Ibu Christina Sudarmi</p>
+  <!-- Main Content -->
+  <div class="main-content hidden-content" id="invitationContent">
+    <h1>Bandar Lampung, Juli 2025</h1>
 
-  <div class="names">Antonius Kristiyanto</div>
-  <p class="info">Putra tunggal dari Bapak Y. Krisno Utomo & Ibu Zefi Sugiyatni</p>
+    <p id="personalized" class="personal"></p>
 
-  <p class="info">Yang akan dilaksanakan pada:</p>
-  <p class="bold">Jumat, 25 Juli 2025</p>
-  <p class="bold">Waktu: 18.15 – selesai</p>
-  <p class="info">Tempat: Rumah Bapak FX Nur Santoso</p>
-  <span class="address">Jl. P Batam I, Gg. Sadewa, Way Halim Permai, Way Halim</span>
+    <p>Dengan penuh syukur atas kasih dan berkat Tuhan, kami mengundang Bapak/Ibu/Saudara/i untuk hadir dalam acara<br><strong>Midodareni</strong> putra-putri kami:</p>
 
-  <a class="map-link" href="https://maps.app.goo.gl/E8whfiRKtxD6jr4A9" target="_blank" rel="noopener noreferrer">
-    Klik untuk melihat lokasi
-  </a>
+    <div class="names">Isabella Carissa Fibriyanti</div>
+    <p class="info">Putri kedua dari Bapak FX Nur Santoso & Ibu Christina Sudarmi</p>
 
-  <div class="footer">
-    <p>
-      Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu demi kelancaran dan keberkahan acara ini.
-    </p>
+    <div class="names">Antonius Kristiyanto</div>
+    <p class="info">Putra tunggal dari Bapak Y. Krisno Utomo & Ibu Zefi Sugiyatni</p>
+
+    <p class="info">Yang akan dilaksanakan pada:</p>
+    <p class="bold">Jumat, 25 Juli 2025</p>
+    <p class="bold">Waktu: 18.15 – selesai</p>
+    <p class="info">Tempat: Rumah Bapak FX Nur Santoso</p>
+    <span class="address">Jl. P Batam I, Gg. Sadewa, Way Halim Permai, Way Halim</span>
+
+    <a class="map-link" href="https://maps.app.goo.gl/E8whfiRKtxD6jr4A9" target="_blank" rel="noopener noreferrer">
+      Klik untuk melihat lokasi
+    </a>
+
+    <div class="footer">
+      <p>
+        Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu demi kelancaran dan keberkahan acara ini.
+      </p>
+    </div>
   </div>
 
   <script>
+    // Get name from URL
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("to");
-    const target = document.getElementById("personalized");
+    const displayName = name ? decodeURIComponent(name).replace(/%0A/g, "\n") : "Tamu Undangan";
 
-    if (name) {
-      const decoded = decodeURIComponent(name).replace(/%0A/g, "\n");
-      target.innerText = "Yth. " + decoded;
+    document.getElementById("coverName").innerText = displayName;
+    document.getElementById("personalized").innerText = "Yth. " + displayName;
+
+    function openInvitation() {
+      // Slide cover
+      document.getElementById("cover").classList.add("hidden");
+
+      // Show content
+      const content = document.getElementById("invitationContent");
+      content.classList.remove("hidden-content");
+
+      // Play music
+      const music = document.getElementById("bgMusic");
+      music.play().catch(() => {
+        alert("Klik lagi jika musik tidak diputar otomatis.");
+      });
     }
   </script>
+
 </body>
 </html>

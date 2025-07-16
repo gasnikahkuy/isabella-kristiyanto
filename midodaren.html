@@ -133,6 +133,28 @@
       background-color: #388e3c;
     }
 
+    #musicToggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 99;
+      width: 50px;
+      height: 50px;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 1.4rem;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      cursor: pointer;
+      display: none;
+      transition: background-color 0.3s ease;
+    }
+
+    #musicToggle:hover {
+      background-color: #388e3c;
+    }
+
     @media (max-width: 600px) {
       .names {
         font-size: 1.5rem;
@@ -163,11 +185,14 @@
   </div>
 
   <!-- Music -->
-  <audio id="bgMusic" src="midodaren/midodaren.mp4" type="audio/mp4"></audio>
+  <audio id="bgMusic" src="midodaren/midodaren.mp4" type="audio/mp4" loop></audio>
+
+  <!-- Music Toggle -->
+  <button id="musicToggle" onclick="toggleMusic()">🔊</button>
 
   <!-- Main Content -->
   <div class="main-content hidden-content" id="invitationContent">
-    <h1>Bandar Lampung, Juli 2025</h1>
+    <h3>Bandar Lampung, Juli 2025</h3>
 
     <p id="personalized" class="personal"></p>
 
@@ -197,7 +222,6 @@
   </div>
 
   <script>
-    // Get name from URL
     const urlParams = new URLSearchParams(window.location.search);
     const name = urlParams.get("to");
     const displayName = name ? decodeURIComponent(name).replace(/%0A/g, "\n") : "Tamu Undangan";
@@ -205,19 +229,27 @@
     document.getElementById("coverName").innerText = displayName;
     document.getElementById("personalized").innerText = "Yth. " + displayName;
 
+    const music = document.getElementById("bgMusic");
+    const toggleBtn = document.getElementById("musicToggle");
+
     function openInvitation() {
-      // Slide cover
       document.getElementById("cover").classList.add("hidden");
+      document.getElementById("invitationContent").classList.remove("hidden-content");
+      toggleBtn.style.display = "block";
 
-      // Show content
-      const content = document.getElementById("invitationContent");
-      content.classList.remove("hidden-content");
-
-      // Play music
-      const music = document.getElementById("bgMusic");
       music.play().catch(() => {
-        alert("Klik lagi jika musik tidak diputar otomatis.");
+        alert("Klik ikon musik jika tidak otomatis diputar.");
       });
+    }
+
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+        toggleBtn.innerText = "🔊";
+      } else {
+        music.pause();
+        toggleBtn.innerText = "🔇";
+      }
     }
   </script>
 

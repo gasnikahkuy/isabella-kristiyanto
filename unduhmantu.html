@@ -1,331 +1,195 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wedding Zoom Pass-Through</title>
+  <title>Ngunduh Mantu Invitation</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
   <style>
-    html {
-      scroll-behavior: smooth;
-    }
     body {
-      margin: 0;
-      padding: 0;
-      background: white;
-      overflow-x: hidden;
+      background: url('undmnt/bg.JPG') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Playfair Display', serif;
+      overflow: hidden; /* prevent scroll before invitation opened */
     }
 
-    .scene {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transform-origin: center;
-      will-change: transform, opacity;
-      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-      z-index: 5;
+    .text-outline-white {
+      text-shadow:
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
     }
 
-    .container {
-      height: 900vh;
-      position: relative;
-      z-index: 10;
+    .font-script {
+      font-family: 'Great Vibes', cursive;
     }
 
-    .scene-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: 1;
-      overflow: hidden;
-      will-change: opacity, transform;
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
     }
 
-    .scene-bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform-origin: center;
-      will-change: transform, opacity;
-      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+    .fade-in.show {
       opacity: 1;
+      transform: translateY(0);
     }
 
-    .tree, .bush {
-      position: fixed;
-      bottom: 0;
-      z-index: 20;
-      will-change: transform, opacity;
-      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-      pointer-events: none;
+    #cover {
+      transition: all 0.8s ease-in-out;
     }
-
-    .tree {
-      transform: scale(3);
-      transform-origin: bottom center;
-    }
-
-    .bush {
-      z-index: 25;
-    }
-
-    /* Fallback gradients in case images don't load */
-    .bg-fallback-1 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-    .bg-fallback-2 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-    .bg-fallback-3 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
-    .bg-fallback-4 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
-    .bg-fallback-5 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
-    .bg-fallback-6 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
-    .bg-fallback-7 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
-    .bg-fallback-8 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); }
   </style>
 </head>
-<body>
+<body class="relative text-white">
 
-  <!-- Background for Scene 1 -->
-  <div class="scene-bg bg-fallback-1" id="scene1Bg">
-    <img src="undmnt/sc1.JPG" alt="Scene 1 Background" onerror="this.style.display='none'" />
-  </div>
+  <!-- Audio -->
+  <audio id="bgm" autoplay loop>
+    <source src="undmnt/undmntmsc.m4a" type="audio/mp4">
+  </audio>
 
-  <!-- Background for Scene 2 -->
-  <div class="scene-bg bg-fallback-2" id="scene2Bg" style="opacity: 0;">
-    <img src="undmnt/sc2.JPG" alt="Scene 2 Background" onerror="this.style.display='none'" />
-  </div>
+  <!-- Cover -->
+  <div id="cover" class="fixed inset-0 flex items-center justify-center z-50 text-center bg-white overflow-hidden opacity-100">
+    <!-- Decorative Wayang Images -->
+    <img src="undmnt/lanang.png" class="absolute bottom-0 left-0 w-auto h-[65%] object-contain z-0" alt="Wayang Lanang" />
+    <img src="undmnt/wedok.png" class="absolute bottom-0 right-0 w-auto h-[65%] object-contain z-0" alt="Wayang Wedok" />
 
-  <!-- Background for Scene 3 -->
-  <div class="scene-bg bg-fallback-3" id="scene3Bg" style="opacity: 0;">
-    <img src="undmnt/sc3.JPG" alt="Scene 3 Background" onerror="this.style.display='none'" />
-  </div>
-
-  <!-- Background for Scene 4 -->
-  <div class="scene-bg bg-fallback-4" id="scene4Bg" style="opacity: 0;">
-    <img src="undmnt/sc4.JPG" alt="Scene 4 Background" onerror="this.style.display='none'" />
-  </div>
-
-  <!-- Background for Scene 5 -->
-  <div class="scene-bg bg-fallback-5" id="scene5Bg" style="opacity: 0;">
-    <img src="undmnt/sc5.JPG" alt="Scene 5 Background" onerror="this.style.display='none'" />
-  </div>
-
-  <!-- Background for Scene 6 -->
-  <div class="scene-bg bg-fallback-6" id="scene6Bg" style="opacity: 0;">
-    <img src="undmnt/sc6.JPG" alt="Scene 6 Background" onerror="this.style.display='none'" />
-  </div>
-
-  <!-- Background for Scene 7 -->
-  <div class="scene-bg bg-fallback-7" id="scene7Bg" style="opacity: 0;">
-    <img src="undmnt/sc7.JPG" alt="Scene 7 Background" onerror="this.style.display='none'" />
-  </div>
-
-  <!-- Background for Scene 8 -->
-  <div class="scene-bg bg-fallback-8" id="scene8Bg" style="opacity: 0;">
-    <img src="undmnt/sc8.JPG" alt="Scene 8 Background" onerror="this.style.display='none'" />
-  </div>
-
-  <!-- Fixed Trees & Bushes -->
-  <img src="undmnt/tree1.png" alt="Tree 1" id="tree1" class="tree left-[5%] w-1/4 max-w-md" 
-       onerror="this.style.display='none'" />
-  <img src="undmnt/tree2.png" alt="Tree 2" id="tree2" class="tree right-[5%] w-1/4 max-w-md" 
-       onerror="this.style.display='none'" />
-  <img src="undmnt/bush1.png" alt="Bush 1" id="bush1" class="bush left-0 w-1/2 max-w-md" 
-       onerror="this.style.display='none'" />
-  <img src="undmnt/bush2.png" alt="Bush 2" id="bush2" class="bush right-0 w-1/2 max-w-md" 
-       onerror="this.style.display='none'" />
-
-  <!-- Scrollable Scenes -->
-  <div class="container">
-    <div class="scene" id="scene1">
-      <div class="flex flex-col items-center text-center z-10">
-        <img src="undmnt/BKlogo.png" alt="BK Logo"
-             class="w-40 md:w-60 lg:w-72 mb-6"
-             id="bkLogo" 
-             onerror="this.outerHTML='<div class=\'w-40 h-40 bg-white rounded-full flex items-center justify-center text-2xl font-bold text-gray-800 shadow-lg mb-6\' id=\'bkLogo\'>B&K</div>'" />
-        <h1 class="text-5xl font-bold text-white drop-shadow-lg">Welcome to Our Garden</h1>
-      </div>
+    <!-- Cover Content -->
+    <div class="relative z-10 max-w-md px-8 py-10 rounded-2xl shadow-xl bg-transparent mt-[-5vh]">
+      <h1 class="text-3xl font-script text-black mb-4">Ngunduh Mantu</h1>
+      <p class="text-lg text-black mb-6 text-outline-white">Antonius Kristiyanto &amp; Isabella Carissa Fibriyanti</p>
+      <button
+        onclick="openInvitation()"
+        class="px-6 py-2 bg-black text-white rounded-full font-semibold shadow-lg hover:scale-105 transition border border-white"
+      >
+        Sumangga Mbikak Uleman
+      </button>
+      <p id="coverGuestName" class="mt-6 text-black font-semibold text-sm text-outline-white"></p>
     </div>
+  </div>
 
-    <div class="scene" id="scene2">
-      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
-        <h2 class="text-4xl font-semibold text-pink-600">Kristiyanto & Isabella</h2>
-        <p class="text-gray-600 mt-4">Together forever</p>
-      </div>
-    </div>
+  <!-- Main Content -->
+  <main class="max-w-3xl mx-auto px-4 py-8">
+    <div class="bg-white bg-opacity-80 text-black rounded-2xl p-6 shadow-lg space-y-12">
 
-    <div class="scene" id="scene3">
-      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
-        <h2 class="text-3xl font-bold text-blue-600">Saturday, 26 July 2025</h2>
-        <p class="text-lg mt-2 text-gray-700">St. Mary's Cathedral, Yogyakarta</p>
-        <p class="text-sm text-gray-500 mt-2">10:00 AM - Holy Matrimony</p>
-      </div>
-    </div>
+      <!-- Guest Name -->
+      <section class="text-center fade-in">
+        <p class="text-sm italic">ꦏꦤ꧀ꦛꦶꦏꦧꦸꦔꦲꦤ꧀ꦭꦤ꧀<br>ꦥꦏꦸꦂꦩꦠꦤ꧀‌ꦏꦸꦭꦄꦠꦸꦫꦏꦺꦤ꧀</p>
+        <p class="text-sm italic">Kanthi kabungahan lan pakurmatan, kula aturaken</p>
+        <p class="text-sm">Dhumateng ingkang kinurmatan</p>
+        <h2 class="text-xl font-semibold" id="guestName">Bapak/Ibu/Sedherek</h2>
+      </section>
 
-    <div class="scene" id="scene4">
-      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
-        <h2 class="text-3xl font-bold mb-4 text-green-600">Our Journey</h2>
-        <p class="text-gray-700">From the first hello to forever after...</p>
-        <p class="text-sm text-gray-500 mt-2">A love story written in the stars</p>
-      </div>
-    </div>
-
-    <div class="scene" id="scene5">
-      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
-        <h2 class="text-3xl font-bold mb-4 text-pink-600">Our Memories</h2>
-        <p class="text-gray-600">A look at our favorite moments together.</p>
-        <div class="grid grid-cols-3 gap-2 mt-4">
-          <div class="bg-gray-200 h-16 rounded"></div>
-          <div class="bg-gray-200 h-16 rounded"></div>
-          <div class="bg-gray-200 h-16 rounded"></div>
+      <!-- Greeting -->
+      <section class="fade-in">
+        <h2 class="text-center font-script text-2xl mb-2">Kanthi asung pakurmatan</h2>
+        <p class="text-justify leading-relaxed">
+          Kanti bingah rahayu, kulo nyuwun rawuhipun Bapak/Ibu/Sedaya ing acara Ngunduh Mantu putra/putri kulo:
+        </p>
+        <div class="my-4 text-center">
+          <h1 class="text-3xl font-script">Antonius Kristiyanto</h1>
+          <p>Putra tunggal saking Bapak Y. Krisno Utomo lan Ibu Zefi Sugiyatni</p>
+          <span class="text-xl font-script block mt-2">&</span>
+          <h1 class="text-3xl font-script">Isabella Carissa Fibriyanti</h1>
+          <p>Putri sepuh saking Bapak FX. Nur Santoso lan Ibu Christina Sudarmi</p>
         </div>
-      </div>
-    </div>
+        <p class="text-justify mt-4 leading-relaxed">
+          Wonten ing sembahyangan lingkungan minangka awujud syukur amargi sampun nampi Sakramen Perkawinan ing dinten Setu, 26 Juli 2025 wanci 11.00 WIB wonten Gereja Katolik Santo Yohanes Rasul, Bandar Lampung.
+        </p>
+      </section>
 
-    <div class="scene" id="scene6">
-      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
-        <h2 class="text-3xl font-bold mb-4 text-teal-600">Leave a Message</h2>
-        <p class="text-gray-600 mb-4">Send your wishes or RSVP</p>
-        <div class="space-y-3">
-          <input type="text" placeholder="Your name" class="w-full p-2 border rounded-lg">
-          <textarea placeholder="Your message" class="w-full p-2 border rounded-lg h-20"></textarea>
-          <button class="bg-teal-500 text-white px-6 py-2 rounded-lg hover:bg-teal-600 transition">Send Wishes</button>
+      <!-- Event Info -->
+      <section class="fade-in text-center">
+        <h2 class="text-2xl font-script mb-4">Ngunduh Mantu</h2>
+        <p class="mb-2">Badhe kalampahan:</p>
+        <p><strong>Setu, 9 Agustus 2025</strong></p>
+        <p><strong>Wanci 17.00 WIB</strong></p>
+        <p><strong>Griya Bp. Krisno Utomo</strong><br>Perum Argorejo Indah No. 25</p>
+        <a href="https://maps.app.goo.gl/FNVszcZ48kjX3Vq16" target="_blank" class="text-blue-600 underline mt-2 inline-block">Mirsani Google Maps</a>
+      </section>
+
+      <!-- Basa Jawa -->
+      <section class="fade-in">
+        <h2 class="text-center font-script text-2xl mb-2">Atur Panuwun</h2>
+        <p class="italic text-justify leading-relaxed">
+          Kagem Bapak/Ibu/Sedaya, ingkang kinurmatan. Mugi rawuhipun panjenengan paring pangestu lan ndadosaken berkah kagem kulawarga. Matur nuwun sanget awit saking sedaya donga lan pengestunipun.
+        </p>
+      </section>
+
+      <!-- Photo Slider -->
+      <section class="fade-in">
+        <h2 class="text-center font-script text-2xl mb-4">Galeri</h2>
+        <div class="relative w-full max-w-3xl mx-auto overflow-hidden rounded-xl shadow-lg">
+          <div class="flex transition-all duration-700 ease-in-out" id="slider">
+            <!-- Replace with actual images -->
+            <img src="undmnt/gal1.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal2.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal3.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal4.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal5.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal6.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal7.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal8.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal9.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal10.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal11.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal12.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal13.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal14.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+            <img src="undmnt/gal15.png" class="w-full max-h-[500px] object-contain flex-shrink-0 rounded-xl" />
+          </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="scene" id="scene7">
-      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
-        <h2 class="text-3xl font-bold mb-4 text-orange-600">Location</h2>
-        <div class="w-80 h-48 bg-gradient-to-br from-green-200 to-blue-200 rounded-lg mx-auto flex items-center justify-center">
-          <p class="text-gray-600">📍 Interactive Map</p>
-        </div>
-        <p class="text-sm text-gray-500 mt-2">St. Mary's Cathedral, Yogyakarta</p>
-      </div>
     </div>
-
-    <div class="scene" id="scene8">
-      <div class="bg-white bg-opacity-90 rounded-2xl shadow-2xl p-6 md:p-10 max-w-xl mx-auto text-center backdrop-blur-sm">
-        <h2 class="text-3xl font-bold text-rose-500 mb-4">Thank You!</h2>
-        <p class="text-gray-700 mt-2">We can't wait to celebrate with you.</p>
-        <p class="text-sm text-gray-500 mt-4">With love, Kristiyanto & Isabella</p>
-      </div>
-    </div>
-  </div>
+  </main>
 
   <script>
-    const scenes = document.querySelectorAll(".scene");
-    const backgrounds = [
-      document.getElementById("scene1Bg"),
-      document.getElementById("scene2Bg"),
-      document.getElementById("scene3Bg"),
-      document.getElementById("scene4Bg"),
-      document.getElementById("scene5Bg"),
-      document.getElementById("scene6Bg"),
-      document.getElementById("scene7Bg"),
-      document.getElementById("scene8Bg")
-    ];
-    const tree1 = document.getElementById("tree1");
-    const tree2 = document.getElementById("tree2");
-    const bush1 = document.getElementById("bush1");
-    const bush2 = document.getElementById("bush2");
-    const bkLogo = document.getElementById("bkLogo");
+    function openInvitation() {
+      const cover = document.getElementById('cover');
+      cover.classList.add('opacity-0');
+      cover.classList.add('-translate-y-full');
 
-    function animateScene() {
-      const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      const totalHeight = document.body.scrollHeight - viewportHeight;
-      const scrollProgress = scrollY / totalHeight;
+      setTimeout(() => {
+        cover.style.display = 'none';
+        document.body.style.overflow = 'auto'; // allow scroll
+        document.getElementById('bgm').play();
 
-      // Animate each scene scale and fade
-      scenes.forEach((scene, i) => {
-        const sceneTop = i * viewportHeight;
-        const distance = scrollY - sceneTop;
-        const progress = 1 - Math.abs(distance / viewportHeight);
-
-        const scale = Math.max(0.8, Math.min(1, progress));
-        const opacity = Math.max(0, Math.min(1, progress * 2));
-
-        scene.style.transform = `scale(${scale})`;
-        scene.style.opacity = opacity;
-        scene.style.zIndex = Math.floor(opacity * 100) + 5;
-      });
-
-      // Background transitions with zoom effect
-      backgrounds.forEach((bg, i) => {
-        const sceneStart = i * viewportHeight;
-        const sceneEnd = (i + 1) * viewportHeight;
-        const sceneProgress = Math.min(1, Math.max(0, (scrollY - sceneStart) / viewportHeight));
-        
-        // Zoom effect for current background
-        const zoomScale = 1 + sceneProgress * 2.5;
-        const bgImg = bg.querySelector('img');
-        if (bgImg) {
-          bgImg.style.transform = `scale(${zoomScale})`;
-        }
-        
-        // Fade out current background as we approach next scene
-        const fadeStart = sceneEnd - viewportHeight * 0.3;
-        const fadeEnd = sceneEnd;
-        const fadeProgress = Math.min(1, Math.max(0, (scrollY - fadeStart) / (fadeEnd - fadeStart)));
-        
-        if (scrollY >= sceneStart && scrollY < sceneEnd) {
-          bg.style.opacity = 1 - fadeProgress;
-        } else if (scrollY >= sceneEnd) {
-          bg.style.opacity = 0;
-        } else {
-          bg.style.opacity = 0;
-        }
-        
-        // Show next background
-        if (i < backgrounds.length - 1 && scrollY >= sceneEnd - viewportHeight * 0.3) {
-          backgrounds[i + 1].style.opacity = fadeProgress;
-        }
-      });
-
-      // Always show first background initially
-      if (scrollY < viewportHeight * 0.7) {
-        backgrounds[0].style.opacity = 1;
-      }
-
-      // Trees & Bushes Animation
-      const gardenProgress = Math.min(scrollProgress * 2, 1);
-      const bushScale = 1 + gardenProgress * 0.8;
-      const bushTranslate = gardenProgress * 120;
-      const treeScale = Math.min(8, 3 + gardenProgress * 5);
-      const treeTranslate = gardenProgress * 500;
-      const logoScale = 1 + gardenProgress * 1.5;
-
-      if (bush1) bush1.style.transform = `translateX(-${bushTranslate}%) scale(${bushScale})`;
-      if (bush2) bush2.style.transform = `translateX(${bushTranslate}%) scale(${bushScale})`;
-      if (tree1) tree1.style.transform = `translateX(-${treeTranslate}%) scale(${treeScale})`;
-      if (tree2) tree2.style.transform = `translateX(${treeTranslate}%) scale(${treeScale})`;
-      if (bkLogo) bkLogo.style.transform = `scale(${logoScale})`;
-
-      // Maintain opacity for all elements
-      [bush1, bush2, tree1, tree2].forEach(el => {
-        if (el) el.style.opacity = 1;
-      });
-
-      requestAnimationFrame(animateScene);
+        // Show top sections right away
+        document.querySelectorAll('.fade-in').forEach((el, idx) => {
+          if (idx < 2) el.classList.add('show');
+        });
+      }, 800);
     }
 
-    // Start animation
-    requestAnimationFrame(animateScene);
+    // Personalized guest name
+    const urlParams = new URLSearchParams(window.location.search);
+    const guest = urlParams.get('to');
+    if (guest) {
+      const formatted = guest.replace(/%0A/g, '<br>').replace(/%20/g, ' ');
+      document.getElementById('guestName').innerHTML = formatted;
+      document.getElementById('coverGuestName').innerHTML = `Dhumateng: <br><span class="font-bold">${formatted}</span>`;
+    }
 
-    // Smooth scrolling for better performance
-    let ticking = false;
+    // Scroll fade-in
+    const faders = document.querySelectorAll('.fade-in');
     window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(animateScene);
-        ticking = true;
-        setTimeout(() => ticking = false, 16);
-      }
+      const trigger = window.innerHeight * 0.9;
+      faders.forEach(el => {
+        const top = el.getBoundingClientRect().top;
+        if (top < trigger) el.classList.add('show');
+      });
     });
+
+    // Image slider
+    let index = 0;
+    setInterval(() => {
+      const slider = document.getElementById('slider');
+      index = (index + 1) % 15;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+    }, 4000);
   </script>
+
 </body>
 </html>

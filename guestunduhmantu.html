@@ -106,19 +106,19 @@
 <body>
   <h2>📋 Daftar Tamu Unduh Mantu</h2>
 
-  <div style="max-width: 500px; margin: 0 auto 1rem;">
-    <input type="text" id="searchInput" placeholder="🔍 Cari nama tamu..." />
-  </div>
-
-  <div id="tableContainer">Loading...</div>
-
-  <form id="addGuestForm">
+    <form id="addGuestForm">
     <h3>➕ Tambah Tamu Baru</h3>
     <input type="text" id="newName" placeholder="Nama lengkap" required />
     <input type="text" id="newAsal" placeholder="Asal (opsional)" />
     <button type="submit">Tambah ke Daftar</button>
     <p id="submitStatus"></p>
   </form>
+
+  <div style="max-width: 500px; margin: 0 auto 1rem;">
+    <input type="text" id="searchInput" placeholder="🔍 Cari nama tamu..." />
+  </div>
+
+  <div id="tableContainer">Loading...</div>
 
   <script>
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/1D0KY0MwZQk2jk9J8VFUvrvYHLpEkuLYG7uyD2J3PF2Q/gviz/tq?sheet=Sheet1&tq=' + encodeURIComponent('SELECT B, C');

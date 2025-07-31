@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <title>📋 Daftar Tamu Unduh Mantu</title>
@@ -18,12 +18,15 @@
       margin-bottom: 1.5rem;
     }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 0.75rem 1rem;
+    input, button, textarea {
       font-size: 1rem;
       border-radius: 8px;
       border: 1px solid #ccc;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
       margin-bottom: 1rem;
     }
 
@@ -47,6 +50,41 @@
       color: white;
     }
 
+    button {
+      background: #25D366;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-top: 0.3rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1ebe5d;
+    }
+
+    .url {
+      font-size: 0.85rem;
+      color: #555;
+      word-break: break-word;
+    }
+
+    form {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: #fff;
+      border-radius: 8px;
+      max-width: 500px;
+      margin-inline: auto;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+
+    form input, form button {
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+
     @media (max-width: 600px) {
       table, thead, tbody, th, td, tr {
         display: block;
@@ -58,6 +96,10 @@
         display: block;
         margin-bottom: 0.5rem;
       }
+
+      button {
+        width: 100%;
+      }
     }
   </style>
 </head>
@@ -65,19 +107,41 @@
   <h2>📋 Daftar Tamu Unduh Mantu</h2>
 
   <div style="max-width: 500px; margin: 0 auto 1rem;">
-    <input
-      type="text"
-      id="searchInput"
-      placeholder="🔍 Cari nama tamu..."
-    />
+    <input type="text" id="searchInput" placeholder="🔍 Cari nama tamu..." />
   </div>
 
   <div id="tableContainer">Loading...</div>
 
+  <form id="addGuestForm">
+    <h3>➕ Tambah Tamu Baru</h3>
+    <input type="text" id="newName" placeholder="Nama lengkap" required />
+    <input type="text" id="newAsal" placeholder="Asal (opsional)" />
+    <button type="submit">Tambah ke Daftar</button>
+    <p id="submitStatus"></p>
+  </form>
+
   <script>
     const sheetUrl = 'https://docs.google.com/spreadsheets/d/1D0KY0MwZQk2jk9J8VFUvrvYHLpEkuLYG7uyD2J3PF2Q/gviz/tq?sheet=Sheet1&tq=' + encodeURIComponent('SELECT B, C');
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwedc2XXk0qWnt6PLmNy_JkY6fdZ_PJo-hnm_zi8ED-M8bxbe9GX-p34JYhn4bQHPhC/exec';
 
     let allRows = [];
+
+    function createWhatsAppLink(name) {
+      const link = `https://gasnikahkuy.github.io/unduhmantu/?to=${encodeURIComponent(name)}`;
+      const message = `Dhumateng Bapak/Ibu/Saudara/i
+${name}
+
+Kanthi bingah rahayu, kulo nyuwun rawuhipun panjenengan ing acara Ngunduh Mantu keluarga kulo.
+
+Informasi lengkap saged kapanggih wonten ing link ing ngandhap menika:
+
+${link}
+
+Matur nuwun sanget atas donga lan pangestunipun.
+
+🙏 Bella & Kris`;
+      return `https://wa.me/?text=${encodeURIComponent(message)}`;
+    }
 
     function renderTable(rows) {
       const container = document.getElementById('tableContainer');
@@ -86,14 +150,20 @@
         return;
       }
 
-      let html = '<table><thead><tr><th>Nama</th><th>Asal</th></tr></thead><tbody>';
+      let html = '<table><thead><tr><th>Nama</th><th>Asal</th><th>WhatsApp</th></tr></thead><tbody>';
       rows.forEach(row => {
         const name = row[0] || '';
         const asal = row[1] || '';
+        const waLink = createWhatsAppLink(name);
+        const link = `https://gasnikahkuy.github.io/unduhmantu/?to=${encodeURIComponent(name)}`;
 
         html += `<tr>
           <td data-label="Nama">${name}</td>
           <td data-label="Asal">${asal}</td>
+          <td data-label="WhatsApp">
+            <a href="${waLink}" target="_blank"><button>Kirim WA</button></a>
+            <div class="url">${link}</div>
+          </td>
         </tr>`;
       });
       html += '</tbody></table>';
@@ -121,6 +191,39 @@
       const keyword = e.target.value.trim().toLowerCase();
       const filtered = allRows.filter(row => row[0]?.toLowerCase().includes(keyword));
       renderTable(filtered);
+    });
+
+    document.getElementById('addGuestForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const name = document.getElementById('newName').value.trim();
+      const asal = document.getElementById('newAsal').value.trim();
+      const status = document.getElementById('submitStatus');
+
+      if (!name) {
+        status.textContent = 'Nama tidak boleh kosong.';
+        return;
+      }
+
+      fetch(scriptUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `name=${encodeURIComponent(name)}&asal=${encodeURIComponent(asal)}`
+      })
+      .then(res => res.text())
+      .then(text => {
+        if (text === "Success") {
+          status.textContent = "✅ Tamu berhasil ditambahkan.";
+          document.getElementById('newName').value = '';
+          document.getElementById('newAsal').value = '';
+          fetchData();
+        } else {
+          status.textContent = "❌ Gagal menambahkan tamu.";
+        }
+      })
+      .catch(err => {
+        console.error('Error:', err);
+        status.textContent = "❌ Error saat mengirim data.";
+      });
     });
 
     fetchData();
